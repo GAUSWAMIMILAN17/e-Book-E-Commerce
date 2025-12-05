@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BookOpen } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -14,8 +14,53 @@ import {
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import axios from "axios";
+import { toast } from "sonner";
+import { USER_API_ENDPOINT } from "../utils/data.js";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { setUser } from "./redux/authSlice.js";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const [input, setInput] = useState({
+    email: "",
+    password: "",
+    role: "",
+  });
+
+  const { user } = useSelector((store) => store.user);
+
+  const changeEventHandler = (e) => {
+    setInput({ ...input, [e.target.name]: e.target.value });
+  };
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await axios.post(`${USER_API_ENDPOINT}/login`, input, {
+        withCredentials: true,
+      });
+
+      if (res.data.success) {
+        dispatch(setUser(res.data.user))
+        navigate("/");
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error("login  faild");
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  });
+
   return (
     <div>
       <Navbar />
@@ -37,24 +82,38 @@ const Login = () => {
               <CardDescription>Sign in to access your account</CardDescription>
             </CardHeader>
             <CardContent>
-              <form className="space-y-4">
+              <form onSubmit={submitHandler} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
                   <Input
+                    value={input.email}
+                    name="email"
                     id="email"
                     type="email"
                     placeholder="you@example.com"
+                    onChange={changeEventHandler}
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="password">Password</Label>
-                  <Input id="password" type="password" placeholder="••••••••" />
+                  <Input
+                    value={input.password}
+                    name="password"
+                    onChange={changeEventHandler}
+                    id="password"
+                    type="password"
+                    placeholder="••••••••"
+                  />
                 </div>
-                <RadioGroup defaultValue="user" className="flex">
+                <RadioGroup
+                  onValueChange={(value) => setInput({ ...input, role: value })}
+                  className="flex"
+                >
                   <div className="flex items-center gap-3">
                     <RadioGroupItem value="user" id="r1" />
                     <Label htmlFor="r1">User</Label>
                   </div>
+
                   <div className="flex items-center gap-3">
                     <RadioGroupItem value="admin" id="r2" />
                     <Label htmlFor="r2">Admin</Label>

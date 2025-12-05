@@ -1,11 +1,17 @@
 import { Link } from "react-router-dom";
-import { ShoppingCart, User, BookOpen } from "lucide-react";
+import { ShoppingCart, User, BookOpen, LogOut, User2 } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
-  const [login, setLogin] = useState(true);
+  
+  
+  const {user} = useSelector((store)=>store.user)
+  
 
   return (
     <nav
@@ -53,10 +59,40 @@ const Navbar = () => {
                 <span className="text-[#666666]">Cart</span>
               </Button>
             </Link>
-            {login ? (
-              
-<h1></h1>
+            {user ? (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Avatar className="cursor-pointer">
+                    <AvatarImage src="logo.png" alt="@shadcn" />
+                  </Avatar>
+                </PopoverTrigger>
+                <PopoverContent className="w-80 mr-2">
+                  <div className="flex items-center gap-4 space-y-2">
+                    <Avatar className="cursor-pointer">
+                      <AvatarImage src="logo.png" alt="@shadcn" />
+                    </Avatar>
+                    <div>
+                      <h3 className="font-medium">Milan Gauswami</h3>
+                      {/* <p className="text-sm text-muted-foreground">Student</p> */}
+                    </div>
+                  </div>
 
+                  <div className="flex flex-col my-2 text-gray-600  ">
+                    <div className="flex w-fit items-center gap-2 cursor-pointer">
+                      <User2></User2>
+                      <Button variant="link">
+                        {" "}
+                        <Link to={"/Profile"}> Profile</Link>{" "}
+                      </Button>
+                    </div>
+
+                    <div className="flex w-fit items-center gap-2 cursor-pointer">
+                      <LogOut></LogOut>
+                      <Button variant="link">Logout</Button>
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
             ) : (
               <Link to="/login">
                 <Button variant="outline" size="sm" className="gap-2">
