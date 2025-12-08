@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BookOpen } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -14,8 +14,59 @@ import {
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { toast } from "sonner";   
+import axios from "axios";
+import { USER_API_ENDPOINT } from "../utils/data.js";
 
 const Signup = () => {
+  const [input, setInput] = useState({
+    fullname: "",
+    email: "",
+    phonenumber: "",
+    password: "",
+    role: "user",
+  });
+  const navigate = useNavigate()
+  const changeEventHandler = (e) => {
+    setInput({ ...input, [e.target.name]: e.target.value });
+  };
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("fullname", input.fullname),
+      formData.append("email", input.email),
+      formData.append("phonenumber", input.phonenumber),
+      formData.append("password", input.password),
+      formData.append("role", input.role);
+
+    try {
+      const res = await axios.post(`${USER_API_ENDPOINT}/register`, input, {
+        withCredentials: true,
+      });
+      // console.log(res)
+
+      if (res.data.success) {
+        navigate("/login");
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      const errorMessage = error.response
+        ? error.response.data.message
+        : "An unexpected error occurred.";
+      toast.error(errorMessage);
+    }
+  };
+  const { user } = useSelector((store) => store.user);
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, []);
+
   return (
     <div>
       <Navbar />
@@ -39,35 +90,38 @@ const Signup = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form className="space-y-4">
+              <form className="space-y-4" onSubmit={submitHandler}>
                 <div className="space-y-2">
-                  <Label htmlFor="name">Full Name</Label>
-                  <Input id="name" placeholder="John Doe" />
+                  <Label htmlFor="fullname">Full Name</Label>
+                  <Input id="fullname" name="fullname" value={input.fullname} onChange={changeEventHandler} placeholder="John Doe" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
                   <Input
                     id="email"
                     type="email"
+                    name="email"
+                    value={input.email}
+                    onChange={changeEventHandler}
                     placeholder="you@example.com"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="number">Phone Number</Label>
-                  <Input id="number" type="number" placeholder="9876543210" />
+                  <Label htmlFor="phonenumber">Phone Number</Label>
+                  <Input id="phonenumber" value={input.phonenumber} name="phonenumber" type="phonenumber" onChange={changeEventHandler} placeholder="9876543210" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="password">Password</Label>
-                  <Input id="password" type="password" placeholder="••••••••" />
+                  <Input id="password" name="password" value={input.password} onChange={changeEventHandler} type="password" placeholder="••••••••" />
                 </div>
 
-                <RadioGroup defaultValue="user" className="flex">
+                <RadioGroup defaultValue="user" onValueChange={(value) => setInput({ ...input, role: value })} className="flex">
                   <div className="flex items-center gap-3">
-                    <RadioGroupItem value="user" id="r1" />
+                    <RadioGroupItem value="user" name  id="r1" />
                     <Label htmlFor="r1">User</Label>
                   </div>
                   <div className="flex items-center gap-3">
-                    <RadioGroupItem value="admin" id="r2" />
+                    <RadioGroupItem value="admin"  id="r2" />
                     <Label htmlFor="r2">Admin</Label>
                   </div>
                 </RadioGroup>

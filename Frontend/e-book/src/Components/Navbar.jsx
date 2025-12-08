@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { ShoppingCart, User, BookOpen, LogOut, User2 } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Avatar, AvatarImage } from "./ui/avatar";
@@ -8,10 +8,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 
 const Navbar = () => {
-  
-  
-  const {user} = useSelector((store)=>store.user)
-  
+  const { user } = useSelector((store) => store.user);
 
   return (
     <nav
@@ -26,30 +23,46 @@ const Navbar = () => {
           </Link>
 
           <div className="hidden md:flex items-center text-[#666666] space-x-8">
-            <Link
+            <NavLink
               to="/"
-              className="hover:text-primary transition-colors font-medium"
+              className={({ isActive }) =>
+                ` ${
+                  isActive ? "text-blue-600" : "text-gray-500"
+                } transition-colors font-medium`
+              }
             >
               Home
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/books"
-              className="hover:text-primary transition-colors font-medium"
+              className={({ isActive }) =>
+                `${
+                  isActive ? "text-blue-600" : "text-gray-500"
+                } transition-colors font-medium`
+              }
             >
               Books
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/categories"
-              className="hover:text-primary transition-colors font-medium"
+              className={({ isActive }) =>
+                ` ${
+                  isActive ? "text-blue-600" : "text-gray-500"
+                } transition-colors font-medium`
+              }
             >
               Categories
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/myorders"
-              className="hover:text-primary transition-colors font-medium"
+              className={({ isActive }) =>
+                `${
+                  isActive ? "text-blue-600" : "text-gray-500"
+                } transition-colors font-medium`
+              }
             >
               My Orders
-            </Link>
+            </NavLink>
           </div>
 
           <div className="flex items-center space-x-4">
