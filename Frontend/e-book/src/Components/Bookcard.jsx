@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Button } from './ui/button';
+import { Link } from 'react-router-dom';
 
 const Bookcard = ({ title, price, oldPrice }) => {
 
@@ -20,7 +21,7 @@ const Bookcard = ({ title, price, oldPrice }) => {
         <div className='flex gap-3 my-3 justify-center'>
           <Button className='bg-[#008ECC] text-white'  variant="primery">Buy</Button>
           <Button className='bg-[#008ECC] text-white' variant="primery">Add Cart</Button>
-          <Button className='bg-[#008ECC] text-white' variant="primery">Details</Button>
+          <Link to={"/detail/123"} ><Button  className='bg-[#008ECC] text-white' variant="primery">Details</Button></Link>
         </div>
       </div>
     </div>

@@ -10,6 +10,7 @@ import { USER_API_ENDPOINT } from "../utils/data";
 import axios from "axios";
 import { toast } from "sonner";
 import { setUser } from "./redux/authSlice";
+import { setAllMyOrders } from "./redux/orderSlice";
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.user);
@@ -24,6 +25,7 @@ const Navbar = () => {
       })
       if(res.data.success){
         dispatch(setUser(null))
+        dispatch(setAllMyOrders([]));
         navigate("/")
         toast.success(res.data.message)
       }

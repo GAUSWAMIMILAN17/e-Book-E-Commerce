@@ -1,13 +1,16 @@
 import React from "react";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
+import { Link } from "react-router-dom";
 
-const Ordercard = () => {
+const Ordercard = ({
+  status, title, phonenumber, email, payment, mode, amount
+}) => {
   return (
     <div className="my-5 bg-[#f5f5f5] border max-w-5xl rounded-2xl p-3 px-10">
       <div className="flex gap-3">
-        <h1 className="font-semibold my-">Web Development </h1>
-        <Badge className="p-1">Pending</Badge>
+        <h1 className="font-semibold my-">{title} </h1>
+        <Badge className="p-1">{status}</Badge>
       </div>
       <div className="flex justify-between my-2">
         <div className="border w-fit rounded-full">
@@ -19,11 +22,14 @@ const Ordercard = () => {
         </div>
         <div className="ms-2 my-auto">
           <h2>kodinar, gujarat</h2>
-          <h2>9876543210</h2>
-          <p>test@gmail.com</p>
+          <h2>{phonenumber}</h2>
+          <p>{email}</p>
+          <p>Payment : {payment}</p>
         </div>
         <div>
-          <Button>View Order</Button>
+          <h2>{mode}</h2>
+          <p>{amount}</p>
+          <Link to={"/myOrders/123"}><Button>View Order</Button></Link>
         </div>
       </div>
     </div>

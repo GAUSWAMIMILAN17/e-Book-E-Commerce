@@ -6,6 +6,8 @@ import Home from './Components/Home'
 import Books from './Components/Books'
 import Categories from './Components/Categories'
 import Myorders from './Components/Myorders'
+import Details from './Components/ui/Details'
+import ViewOrders from './Components/ui/ViewOrders'
 
 
 function App() {
@@ -16,7 +18,9 @@ function App() {
     <Route path='/' element={<Home /> }/>
     <Route path='/books' element={<Books /> }/>
     <Route path='/categories' element={<Categories /> }/>
-    <Route path='/myorders' element={<Myorders /> }/>l̥
+    <Route path='/myorders' element={<Myorders /> }/>
+    <Route path='/detail/:id' element={<Details /> }/>
+    <Route path='/myOrders/:id' element={<ViewOrders /> }/>
   </Routes></div>
  )
 }
