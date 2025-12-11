@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
 
-const Bookcard = ({ title, price, oldPrice }) => {
+const Bookcard = ({ title, price, oldPrice , id}) => {
   return (
     <div className="my-3 w-75 rounded-xl border transition-shadow duration-300 hover:shadow-xl">
       <div className="bg-[#f5f5f5] rounded-t-xl overflow-hidden">
@@ -23,7 +23,7 @@ const Bookcard = ({ title, price, oldPrice }) => {
         <div className="flex gap-3 my-3 ">
           {/* <Button className='bg-[#008ECC] text-white'  variant="primery">Buy</Button> */}
 
-          <Link to={"/detail/123"}>
+          <Link to={`/detail/${id}`}>
             <Button className="bg-[#008ECC] text-white" variant="primery">
               Buy
             </Button>

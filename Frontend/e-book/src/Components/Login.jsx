@@ -43,8 +43,10 @@ const Login = () => {
       const res = await axios.post(`${USER_API_ENDPOINT}/login`, input, {
         withCredentials: true,
       });
+      // console.log(res.data)
 
       if (res.data.success) {
+        localStorage.setItem("token", res.data.token);
         dispatch(setUser(res.data.user))
         // console.log(res.data.user)
         navigate("/");

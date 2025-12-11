@@ -45,7 +45,9 @@ const Myorders = () => {
       <div>
         {allMyOrders.slice(0, 6).map((order) => (
           <Ordercard
-            // key={order._id}
+            key={order._id}
+            id={order._id}
+            address={order.user.profile.address}
             title={order.books[0].book.title}
             phonenumber={order.user.phonenumber}
             email={order.user.email}

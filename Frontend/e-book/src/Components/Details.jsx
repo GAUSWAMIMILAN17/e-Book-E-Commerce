@@ -1,10 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { Button } from "./ui/button";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import axios from "axios";
+import { BOOK_API_ENDPOINT, ORDER_API_ENDPOINT } from "../utils/data";
+import { toast } from "sonner";
+import { setPlacedOrder } from "./redux/orderSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setSingleBook } from "./redux/bookSlice";
 
 const Details = () => {
+  const dispatch = useDispatch()
+  const {id} = useParams();
+  const {singleBook} = useSelector((store) => store.books)
   const [qty, setQty] = useState(1);
 
   const decrease = () => {
@@ -16,6 +25,52 @@ const Details = () => {
   const increase = () => {
     setQty(qty + 1);
   };
+
+  // const placeOrder = async () => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+
+  //     if (!token) toast.message("plz login first");
+  //     const bookId = req.params
+  //     const orderBody = {
+  //       books: [{ book: bookId, quantity: qty }],
+  //       paymentMode: "cod",
+  //     };
+
+  //     const res = await axios.post(
+  //     `${ORDER_API_ENDPOINT}/placeOrder`,
+  //     orderBody,
+  //   );
+
+  //   // ⭐ ORDER REDUX MA STORE KARO
+  //   dispatch(setPlacedOrder(res.data.order));
+
+  //   toast.message("Order placed successfully!");
+
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+
+  useEffect(()=> {
+    const Bookdetail = async() => {
+      try{
+        console.log(id)
+        const res = await axios.get(`${BOOK_API_ENDPOINT}/singleBook/${id}`, {
+          withCredentials: true
+        })
+        console.log(res.data.book);
+        if(res.data.success) {
+          dispatch(setSingleBook(res.data.book))
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    Bookdetail()
+  }, [])
+
   return (
     <div>
       <Navbar />
@@ -23,7 +78,7 @@ const Details = () => {
         <div className="flex justify-center">
           <div className="max-w-5xl mx-auto p-10">
             <h1 className="text-xl font-semibold">
-              Book Name : Web Development
+              Book Name : {singleBook?.title}
             </h1>
             <div className="bg-[#f5f5f5] rounded-xl w-fit my-5 overflow-hidden">
               <img
@@ -31,14 +86,14 @@ const Details = () => {
                 className="object-cover h-48 transform transition duration-300 ease-in-out hover:scale-110"
               />
             </div>
-            <div>
-              <h2>author: Milan</h2>
-              <p>Discription</p>
-              <p>Category : Web Development</p>
-              <p>pages : 500</p>
-              <p>price: 500</p>
-              <p>language</p>
-              <p>publishedYear: 2025</p>
+            <div className="my-5">
+              <h2>Author: <span>{singleBook?.author}</span></h2>
+              <p>Discription : <span>{singleBook?.description}</span></p>
+              <p>Category : <span>{singleBook?.category}</span></p>
+              <p>Pages : <span>{singleBook?.pages}</span></p>
+              <p>Price: <span>{singleBook?.price}</span></p>
+              <p>Language : <span>{singleBook?.language}</span></p>
+              <p>PublishedYear: <span>{singleBook?.publishedYear}</span></p>
             </div>
             <div className="flex items-center gap-3">
               <button

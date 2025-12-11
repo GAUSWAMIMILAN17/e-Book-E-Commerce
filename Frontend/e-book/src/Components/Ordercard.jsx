@@ -4,7 +4,7 @@ import { Badge } from "./ui/badge";
 import { Link } from "react-router-dom";
 
 const Ordercard = ({
-  status, title, phonenumber, email, payment, mode, amount
+  status, title, phonenumber, email, payment, mode, amount, id ,address
 }) => {
   return (
     <div className="my-5 bg-[#f5f5f5] border max-w-5xl rounded-2xl p-3 px-10">
@@ -21,7 +21,7 @@ const Ordercard = ({
           />
         </div>
         <div className="ms-2 my-auto">
-          <h2>kodinar, gujarat</h2>
+          <h2>{address}</h2>
           <h2>{phonenumber}</h2>
           <p>{email}</p>
           <p>Payment : {payment}</p>
@@ -29,7 +29,7 @@ const Ordercard = ({
         <div>
           <h2>{mode}</h2>
           <p>{amount}</p>
-          <Link to={"/myOrders/123"}><Button>View Order</Button></Link>
+          <Link to={`/myOrders/${id}`}><Button>View Order</Button></Link>
         </div>
       </div>
     </div>

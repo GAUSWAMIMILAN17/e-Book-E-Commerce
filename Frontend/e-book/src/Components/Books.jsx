@@ -50,13 +50,14 @@ const Books = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 mt-6">
-          {allBooks.slice(0, 6).map((job) => (
+          {allBooks.slice(0, 6).map((book) => (
             <Bookcard
-              key={job._id}
-              // image={allBooks.image}
-              title={job.title}
-              price={job.price}
-              oldPrice={job.oldPrice}
+            key={book._id}
+              id={book._id}
+              // image={book.image}
+              title={book.title}
+              price={book.price}
+              oldPrice={book.oldPrice}
             />
           ))}
         </div>

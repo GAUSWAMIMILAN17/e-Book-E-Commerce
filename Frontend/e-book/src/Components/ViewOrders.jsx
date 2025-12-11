@@ -1,12 +1,38 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { Button } from "./ui/button";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Badge } from "./ui/badge";
-
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { ORDER_API_ENDPOINT } from "../utils/data";
+import { setSingleOrder } from "./redux/orderSlice";
 
 const ViewOrders = () => {
+  const { id } = useParams();
+
+  const dispatch = useDispatch();
+  const { singleOrder } = useSelector((store) => store.orders);
+
+  useEffect(() => {
+    const fetchOrder = async () => {
+      try {
+        const res = await axios.get(`${ORDER_API_ENDPOINT}/myOrders/${id}`, {
+          withCredentials: true,
+        });
+        console.log(res.data.order);
+
+        if (res.data.success) {
+          dispatch(setSingleOrder(res.data.order));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchOrder();
+  }, []);
+
   return (
     <div>
       <Navbar />
@@ -14,7 +40,10 @@ const ViewOrders = () => {
         <div className="">
           <div className="max-w-6xl mx-auto p-10 border m-2">
             <h1 className="text-2xl font-semibold">
-              Order : <Badge className="bg-[#008ECC] px-5 py-1">status</Badge>
+              Order :{" "}
+              <Badge className="bg-[#008ECC] px-5 py-1">
+                {singleOrder?.orderStatus}
+              </Badge>
             </h1>
             <div className="bg-[#f5f5f5] rounded-xl w-fit my-5 overflow-hidden">
               <img
@@ -23,22 +52,31 @@ const ViewOrders = () => {
               />
             </div>
             <div className="border p-3 rounded-xl">
-              <h2 className="font-semibold text-xl">title: Software Development</h2>
-              <p>adress : gandhinagar gujarat</p>
-              <p>phonenumber : 7894561230</p>
-              <p>email : <span>milan@gmail.com</span></p>
-              <p>quantity : <span className="font-bold">2</span></p>
-              <p>paymentMode : <Badge>COD</Badge> </p>
-              <p>paymentStatus : <Badge>Pending</Badge></p>
-              <p>totalAmount : <span className="font-semibold">1000</span></p>
-              <p>language : <Badge>English</Badge></p>
-              <p>publishedYear: 2025</p>
+              <h2 className="font-semibold text-xl">
+                {singleOrder?.books?.book?.title}
+              </h2>
+              <p>Adress : {singleOrder?.user?.profile?.address}</p>
+              <p>phonenumber : {singleOrder?.user?.phonenumber}</p>
+              <p>email : {singleOrder?.user?.email}</p>
+              <p>quantity : {singleOrder?.books?.[0]?.quantity}</p>
+              <p>
+                paymentMode : <Badge>{singleOrder?.paymentMode}</Badge>
+              </p>
+              <p>
+                paymentStatus : <Badge>{singleOrder?.paymentStatus}</Badge>
+              </p>
+              <p>totalAmount : {singleOrder?.totalAmount}</p>
+              <p>
+                language : <Badge>{singleOrder?.books[0]?.book?.language}</Badge>
+              </p>
+              <p>publishedYear: {singleOrder?.books[0]?.book?.publishedYear}</p>
             </div>
             <div className="flex gap-3 my-3">
-              <Link to={"/myOrders"} >
-              <Button className="bg-[#008ECC] text-white" variant="primery">
-                Back
-              </Button></Link>
+              <Link to={"/myOrders"}>
+                <Button className="bg-[#008ECC] text-white" variant="primery">
+                  Back
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

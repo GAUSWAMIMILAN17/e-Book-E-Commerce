@@ -23,11 +23,14 @@ const orderSlice = createSlice({
         },
         setSingleAdminOrder(state, action) {
             state.singleAdminOrder = action.payload
+        },
+        setPlacedOrder(state, action) {
+            state.singleOrder = action.payload;
         }
     }
 })
 
-export const {setAllAdminGetAllOrders,setAllMyOrders,setSingleAdminOrder,setSingleOrder} = orderSlice.actions
+export const {setAllAdminGetAllOrders,setAllMyOrders,setSingleAdminOrder,setSingleOrder, setPlacedOrder} = orderSlice.actions
 
 export default orderSlice.reducer
 
