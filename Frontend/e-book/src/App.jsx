@@ -6,8 +6,9 @@ import Home from './Components/Home'
 import Books from './Components/Books'
 import Categories from './Components/Categories'
 import Myorders from './Components/Myorders'
-import Details from './Components/ui/Details'
-import ViewOrders from './Components/ui/ViewOrders'
+import ViewOrders from "./Components/ViewOrders"
+import Details from "./Components/Details"
+import Cart from './Components/Cart'
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
     <Route path='/login' element={<Login />} />
     <Route path='/signup' element={<Signup />} />
     <Route path='/' element={<Home /> }/>
+    <Route path='/cart' element={<Cart /> }/>
     <Route path='/books' element={<Books /> }/>
     <Route path='/categories' element={<Categories /> }/>
     <Route path='/myorders' element={<Myorders /> }/>

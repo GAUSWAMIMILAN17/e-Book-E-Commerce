@@ -1,19 +1,29 @@
-import React from "react";
-import Navbar from "../Navbar";
-import Footer from "../Footer";
-import { Button } from "./button";
+import React, { useState } from "react";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
+import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
 
+const Details = () => {
+  const [qty, setQty] = useState(1);
 
-const ViewOrders = () => {
+  const decrease = () => {
+    if (qty > 1) {
+      setQty(qty - 1);
+    }
+  };
+
+  const increase = () => {
+    setQty(qty + 1);
+  };
   return (
     <div>
       <Navbar />
       <div className="min-h-screen">
-        <div className="">
-          <div className="max-w-6xl mx-auto p-10 border m-2">
-            <h1 className="text-2xl font-semibold">
-              Order : status
+        <div className="flex justify-center">
+          <div className="max-w-5xl mx-auto p-10">
+            <h1 className="text-xl font-semibold">
+              Book Name : Web Development
             </h1>
             <div className="bg-[#f5f5f5] rounded-xl w-fit my-5 overflow-hidden">
               <img
@@ -21,23 +31,46 @@ const ViewOrders = () => {
                 className="object-cover h-48 transform transition duration-300 ease-in-out hover:scale-110"
               />
             </div>
-            <div className="border p-3 rounded-xl">
-              <h2 className="font-semibold text-xl">title: Software Development</h2>
-              <p>adress</p>
-              <p>phonenumber</p>
-              <p>email</p>
-              <p>quantity</p>
-              <p>paymentMode : </p>
-              <p>paymentStatus</p>
-              <p>totalAmount</p>
+            <div>
+              <h2>author: Milan</h2>
+              <p>Discription</p>
+              <p>Category : Web Development</p>
+              <p>pages : 500</p>
+              <p>price: 500</p>
               <p>language</p>
               <p>publishedYear: 2025</p>
             </div>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={decrease}
+                className="px-3 py-1 bg-gray-300 rounded-lg text-xl"
+              >
+                −
+              </button>
+
+              <span className="text-lg font-semibold w-6 text-center">
+                {qty}
+              </span>
+
+              <button
+                onClick={increase}
+                className="px-3 py-1 bg-gray-300 rounded-lg text-xl"
+              >
+                +
+              </button>
+            </div>
             <div className="flex gap-3 my-3">
-              <Link to={"/myOrders"} >
               <Button className="bg-[#008ECC] text-white" variant="primery">
-                Back
-              </Button></Link>
+                Buy
+              </Button>
+              <Button className="bg-[#008ECC] text-white" variant="primery">
+                Add Cart
+              </Button>
+              <Link to={"/books"}>
+                <Button className="bg-black text-white" variant="primery">
+                  Back
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -47,4 +80,4 @@ const ViewOrders = () => {
   );
 };
 
-export default ViewOrders;
+export default Details;
