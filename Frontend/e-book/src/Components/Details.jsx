@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { setPlacedOrder } from "./redux/orderSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setSingleBook } from "./redux/bookSlice";
+import { setAddtoCart } from "./redux/cartSlice";
 
 const Details = () => {
   const dispatch = useDispatch()
@@ -26,31 +27,15 @@ const Details = () => {
     setQty(qty + 1);
   };
 
-  // const placeOrder = async () => {
-  //   try {
-  //     const token = localStorage.getItem("token");
-
-  //     if (!token) toast.message("plz login first");
-  //     const bookId = req.params
-  //     const orderBody = {
-  //       books: [{ book: bookId, quantity: qty }],
-  //       paymentMode: "cod",
-  //     };
-
-  //     const res = await axios.post(
-  //     `${ORDER_API_ENDPOINT}/placeOrder`,
-  //     orderBody,
-  //   );
-
-  //   // ⭐ ORDER REDUX MA STORE KARO
-  //   dispatch(setPlacedOrder(res.data.order));
-
-  //   toast.message("Order placed successfully!");
-
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+    const handleAddToCart = () => {
+      dispatch(setAddtoCart({
+        _id: singleBook._id,
+        title: singleBook.title,
+        price: singleBook.price
+        // image heare after cloudinary injact
+      }))
+      toast.success("Added to Cart Successfully!");
+    }
 
 
   useEffect(()=> {
@@ -118,7 +103,7 @@ const Details = () => {
               <Button className="bg-[#008ECC] text-white" variant="primery">
                 Buy
               </Button>
-              <Button className="bg-[#008ECC] text-white" variant="primery">
+              <Button onClick={handleAddToCart} className="bg-[#008ECC] text-white" variant="primery">
                 Add Cart
               </Button>
               <Link to={"/books"}>

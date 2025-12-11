@@ -17,7 +17,7 @@ const authenticateToken = async(req, res, next) => {
         res.status(401).json({ message: "Invalid token" }), (success = false)
       );
     }
-    // req.id = decoded.userId;
+    req.id = decoded.userId;
     const user = await User.findById(decoded.userId).select("-password");
     // console.log(user)
     req.user = user; 

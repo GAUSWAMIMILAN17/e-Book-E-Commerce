@@ -1,8 +1,24 @@
 import React, { useEffect } from "react";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
+import {useDispatch} from "react-redux"
+import { setAddtoCart } from "./redux/cartSlice";
+import { toast } from "sonner";
 
 const Bookcard = ({ title, price, oldPrice , id}) => {
+
+  const dispatch = useDispatch()
+
+  const handleAddToCart = () => {
+    dispatch(setAddtoCart({
+      _id: id,
+      title,
+      price
+      // image heare after cloudinary injact
+    }))
+    toast.success("Added to Cart Successfully!");
+  }
+
   return (
     <div className="my-3 w-75 rounded-xl border transition-shadow duration-300 hover:shadow-xl">
       <div className="bg-[#f5f5f5] rounded-t-xl overflow-hidden">
@@ -28,7 +44,7 @@ const Bookcard = ({ title, price, oldPrice , id}) => {
               Buy
             </Button>
           </Link>
-          <Button className="bg-[#008ECC] text-white" variant="primery">
+          <Button onClick={handleAddToCart} className="bg-[#008ECC] text-white" variant="primery">
             Add Cart
           </Button>
         </div>

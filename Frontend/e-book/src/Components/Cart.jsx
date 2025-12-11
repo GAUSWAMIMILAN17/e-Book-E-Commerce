@@ -3,30 +3,64 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import Cartcard from "./Cartcard";
 import { Button } from "./ui/button";
+import { useDispatch, useSelector } from "react-redux";
+import { setClearCart } from "./redux/cartSlice";
+import { toast } from "sonner";
 
 const Cart = () => {
-    
+  const dispatch = useDispatch()
+  const {items} = useSelector((store) => store.cart)
+
+  const clearCart = () => {
+    dispatch(setClearCart())
+    toast.success("Clear Cart Successfully!");
+  }
+
+  const totalAmount = items.reduce((sum, item) => sum + item.price * item.qauntity,0) 
+
   return (
     <div>
       <Navbar />
       <div className="max-w-7xl mx-auto my-5 flex justify-between">
-      <div className="min-h-screen">
-        <div className=" my-5">
-          <h1 className="text-3xl font-bold">Shoping Cart</h1>
-          <p className="text-[#818388]">items currently in your cart</p>
+        <div className="min-h-screen w-2/3">
+          <div className=" my-5">
+            <h1 className="text-3xl font-bold">Shopping Cart</h1>
+            <p className="text-[#818388]">{items.length} items currently in your cart</p>
+          </div>
+
+          <div className="flex gap-3 col-span-2">
+            {items.length === 0 ? (
+              <p className="text-gray-500">Your cart is empty</p>
+            ) : (
+              items.map(it => <Cartcard  key={it._id} item={it} />)
+            )}
+          </div>
         </div>
-        <div className="">
-            <Cartcard />
-        </div>
-      </div>
-      <div className="border-l ps-10  border-gray-400">
-        <h1 className="text-xl font-semibold">Total Amount</h1>
-        <hr />
-        <p className="my-10">Amount Calculation</p>
-        <Button className="bg-[#008ECC] text-white" variant="primery">
+
+        <div className="border-l ps-10 border-gray-400 w-1/3 p-4">
+          <h1 className="text-xl font-semibold">Order Summary</h1>
+          <hr className="my-3" />
+          <div className="my-4">
+            <p className="mb-2">Subtotal ({items.length} items)</p>
+            <p className="text-2xl font-bold">₹{totalAmount}</p>
+          </div>
+
+          <Button
+            onClick={() => { /* handle place order */ }}
+            className="bg-[#008ECC] text-white w-full"
+            variant="primery"
+          >
             Place Order
           </Button>
-      </div>
+
+          <Button
+            onClick={clearCart}
+            className="mt-3 w-full"
+            variant="primery"
+          >
+            Clear Cart
+          </Button>
+        </div>
       </div>
       <Footer />
     </div>

@@ -1,20 +1,26 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from './ui/button';
+import { useDispatch } from 'react-redux';
+import { setDecreaseQty, setIncreaseQty, setRemoveFromCart } from './redux/cartSlice';
+import { toast } from 'sonner';
 
-const Cartcard = () => {
+const Cartcard = ({item}) => {
+  // console.log(item)
 
-    const [qty, setQty] = useState(1);
-    
-      const decrease = () => {
-        if (qty > 1) {
-          setQty(qty - 1);
-        }
-      };
-    
-      const increase = () => {
-        setQty(qty + 1);
-      };
+  const dispatch = useDispatch()
+
+  const handleRemove = () => {
+    dispatch(setRemoveFromCart(item._id))
+    toast.success("Remove Successfully!");
+  }
+  const handleInc = () => {
+    dispatch(setIncreaseQty(item._id))
+  }
+  const handleDec = () => {
+    dispatch(setDecreaseQty(item._id))
+  }
+  
   return (
     <div className="my-3 w-75 rounded-xl border transition-shadow duration-300 hover:shadow-xl">
     <div className=''>
@@ -26,28 +32,28 @@ const Cartcard = () => {
       </div>
 
       <div className="p-3">
-        <h1 className="text-xl font-semibold">hello</h1>
+        <h1 className="text-xl font-semibold">{item.title}</h1>
 
         <p className="my-2 font-semibold">
-          1000
+          {item.price}
           <span className="line-through font-light ms-3">500</span>
         </p>
 
         <div className="flex gap-3 my-3 ">
           <div className="flex items-center gap-3">
               <button
-                onClick={decrease}
+                onClick={handleDec}
                 className="px-3 py-1 bg-gray-300 rounded-lg text-xl"
               >
                 −
               </button>
 
               <span className="text-lg font-semibold w-6 text-center">
-                {qty}
+                {item.qauntity}
               </span>
 
               <button
-                onClick={increase}
+                onClick={handleInc}
                 className="px-3 py-1 bg-gray-300 rounded-lg text-xl"
               >
                 +
@@ -59,7 +65,7 @@ const Cartcard = () => {
               Buy
             </Button>
           </Link> */}
-          <Button className="bg-[#008ECC] text-white" variant="primery">
+          <Button onClick={handleRemove} className="bg-[#008ECC] text-white" variant="primery">
             Remove
           </Button>
         </div>
