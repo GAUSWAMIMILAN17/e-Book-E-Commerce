@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import path from "path";
 
-// user signup
+// new user signup
 export const register = async (req, res) => {
   try {
     const { fullname, email, phonenumber, password, role } = req.body;
