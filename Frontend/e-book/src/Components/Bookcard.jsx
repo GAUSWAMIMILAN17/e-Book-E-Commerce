@@ -1,15 +1,20 @@
 import React, { useEffect } from "react";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
-import {useDispatch} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 import { setAddtoCart } from "./redux/cartSlice";
 import { toast } from "sonner";
 
 const Bookcard = ({ title, price, oldPrice , id}) => {
 
   const dispatch = useDispatch()
+  const {user} = useSelector((Store)=> Store.user)
 
   const handleAddToCart = () => {
+    if(!user){
+      toast.success("plz login and try again")
+      return;
+    }
     dispatch(setAddtoCart({
       _id: id,
       title,

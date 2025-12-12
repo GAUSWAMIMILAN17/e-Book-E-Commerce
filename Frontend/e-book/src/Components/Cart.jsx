@@ -8,15 +8,23 @@ import { setClearCart } from "./redux/cartSlice";
 import { toast } from "sonner";
 
 const Cart = () => {
-  const dispatch = useDispatch()
-  const {items} = useSelector((store) => store.cart)
+  const dispatch = useDispatch();
+  const { items } = useSelector((store) => store.cart);
+  const { user } = useSelector((store) => store.user);
 
   const clearCart = () => {
-    dispatch(setClearCart())
+    if (!user) {
+      toast.success("plz login and try again");
+      return;
+    }
+    dispatch(setClearCart());
     toast.success("Clear Cart Successfully!");
-  }
+  };
 
-  const totalAmount = items.reduce((sum, item) => sum + item.price * item.qauntity,0) 
+  const totalAmount = items.reduce(
+    (sum, item) => sum + item.price * item.qauntity,
+    0
+  );
 
   return (
     <div>
@@ -25,14 +33,16 @@ const Cart = () => {
         <div className="min-h-screen w-2/3">
           <div className=" my-5">
             <h1 className="text-3xl font-bold">Shopping Cart</h1>
-            <p className="text-[#818388]">{items.length} items currently in your cart</p>
+            <p className="text-[#818388]">
+              {items.length} items currently in your cart
+            </p>
           </div>
 
           <div className="flex gap-3 col-span-2">
             {items.length === 0 ? (
               <p className="text-gray-500">Your cart is empty</p>
             ) : (
-              items.map(it => <Cartcard  key={it._id} item={it} />)
+              items.map((it) => <Cartcard key={it._id} item={it} />)
             )}
           </div>
         </div>
@@ -46,18 +56,16 @@ const Cart = () => {
           </div>
 
           <Button
-            onClick={() => { /* handle place order */ }}
+            onClick={() => {
+              /* handle place order */
+            }}
             className="bg-[#008ECC] text-white w-full"
             variant="primery"
           >
             Place Order
           </Button>
 
-          <Button
-            onClick={clearCart}
-            className="mt-3 w-full"
-            variant="primery"
-          >
+          <Button onClick={clearCart} className="mt-3 w-full" variant="primery">
             Clear Cart
           </Button>
         </div>

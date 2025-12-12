@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { Button } from "./ui/button";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { BOOK_API_ENDPOINT, ORDER_API_ENDPOINT } from "../utils/data";
@@ -10,11 +12,17 @@ import { setPlacedOrder } from "./redux/orderSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setSingleBook } from "./redux/bookSlice";
 import { setAddtoCart } from "./redux/cartSlice";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@radix-ui/react-popover";
 
 const Details = () => {
-  const dispatch = useDispatch()
-  const {id} = useParams();
-  const {singleBook} = useSelector((store) => store.books)
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const { singleBook } = useSelector((store) => store.books);
+  const { user } = useSelector((store) => store.user);
   const [qty, setQty] = useState(1);
 
   const decrease = () => {
@@ -27,34 +35,43 @@ const Details = () => {
     setQty(qty + 1);
   };
 
-    const handleAddToCart = () => {
-      dispatch(setAddtoCart({
+  const handleAddToCart = () => {
+    if (!user) {
+      toast.success("plz login and try again");
+      return;
+    }
+    dispatch(
+      setAddtoCart({
         _id: singleBook._id,
         title: singleBook.title,
-        price: singleBook.price
+        price: singleBook.price,
         // image heare after cloudinary injact
-      }))
-      toast.success("Added to Cart Successfully!");
-    }
+      })
+    );
+    toast.success("Added to Cart Successfully!");
+  };
 
+  const placeOrder = () => {
+    
+  }
 
-  useEffect(()=> {
-    const Bookdetail = async() => {
-      try{
-        console.log(id)
+  useEffect(() => {
+    const Bookdetail = async () => {
+      try {
+        console.log(id);
         const res = await axios.get(`${BOOK_API_ENDPOINT}/singleBook/${id}`, {
-          withCredentials: true
-        })
+          withCredentials: true,
+        });
         console.log(res.data.book);
-        if(res.data.success) {
-          dispatch(setSingleBook(res.data.book))
+        if (res.data.success) {
+          dispatch(setSingleBook(res.data.book));
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-    Bookdetail()
-  }, [])
+    };
+    Bookdetail();
+  }, []);
 
   return (
     <div>
@@ -72,15 +89,29 @@ const Details = () => {
               />
             </div>
             <div className="my-5">
-              <h2>Author: <span>{singleBook?.author}</span></h2>
-              <p>Discription : <span>{singleBook?.description}</span></p>
-              <p>Category : <span>{singleBook?.category}</span></p>
-              <p>Pages : <span>{singleBook?.pages}</span></p>
-              <p>Price: <span>{singleBook?.price}</span></p>
-              <p>Language : <span>{singleBook?.language}</span></p>
-              <p>PublishedYear: <span>{singleBook?.publishedYear}</span></p>
+              <h2>
+                Author: <span>{singleBook?.author}</span>
+              </h2>
+              <p>
+                Discription : <span>{singleBook?.description}</span>
+              </p>
+              <p>
+                Category : <span>{singleBook?.category}</span>
+              </p>
+              <p>
+                Pages : <span>{singleBook?.pages}</span>
+              </p>
+              <p>
+                Price: <span>{singleBook?.price}</span>
+              </p>
+              <p>
+                Language : <span>{singleBook?.language}</span>
+              </p>
+              <p>
+                PublishedYear: <span>{singleBook?.publishedYear}</span>
+              </p>
             </div>
-            <div className="flex items-center gap-3">
+            {/* <div className="flex items-center gap-3">
               <button
                 onClick={decrease}
                 className="px-3 py-1 bg-gray-300 rounded-lg text-xl"
@@ -98,12 +129,73 @@ const Details = () => {
               >
                 +
               </button>
-            </div>
+            </div> */}
             <div className="flex gap-3 my-3">
               <Button className="bg-[#008ECC] text-white" variant="primery">
-                Buy
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="Primery">Buy</Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-80 bg-black p-3 rounded-2xl m-3">
+                    <div className="grid gap-4">
+                      <div className="space-y-2">
+                        <h4 className="leading-none font-medium">
+                          Place Order
+                        </h4>
+                        <p className="text-muted-foreground text-sm">
+                          Select Payment Mode
+                        </p>
+                      </div>
+                      <div className="grid gap-2">
+                        <div className=" items-center gap-4">
+                          <div className="flex items-center my-3 gap-3">
+                            <button
+                              onClick={decrease}
+                              className="px-3 py-1 bg-gray-300 text-black rounded-lg text-xl"
+                            >
+                              −
+                            </button>
+
+                            <span className="text-lg font-semibold w-6 text-center">
+                              {qty}
+                            </span>
+
+                            <button
+                              onClick={increase}
+                              className="px-3 py-1 bg-gray-300 text-black rounded-lg text-xl"
+                            >
+                              +
+                            </button>
+                          </div>
+                          <div>
+                            <Label htmlFor="width" className="mb-3">Payment Mode</Label>
+                            <select
+                              id="payment"
+                              className="w-full rounded-md border px-3 py-2"
+                            >
+                              <optgroup
+                                className="bg-black"
+                                label="Payment Options"
+                              >
+                                <option value="cod">COD</option>
+                                <option value="online">Online</option>
+                              </optgroup>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <Button className="mt-4 bg-[#008ECC]" variant="primery">
+                      Place Order
+                    </Button>
+                  </PopoverContent>
+                </Popover>
               </Button>
-              <Button onClick={handleAddToCart} className="bg-[#008ECC] text-white" variant="primery">
+              <Button
+                onClick={handleAddToCart}
+                className="bg-[#008ECC] text-white"
+                variant="primery"
+              >
                 Add Cart
               </Button>
               <Link to={"/books"}>
