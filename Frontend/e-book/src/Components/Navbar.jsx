@@ -121,7 +121,7 @@ const Navbar = () => {
                       <User2></User2>
                       <Button variant="link">
                         {" "}
-                        <Link to={"/Profile"}> Profile</Link>{" "}
+                        <Link to={"/profile"}> Profile</Link>{" "}
                       </Button>
                     </div>
 

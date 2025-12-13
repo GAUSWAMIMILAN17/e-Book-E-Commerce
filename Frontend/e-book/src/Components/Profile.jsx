@@ -1,0 +1,221 @@
+import React, { useEffect, useState } from "react";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import {Label} from "./ui/label"
+import {Input} from "./ui/input"
+import {Textarea} from "./ui/textarea"
+import axios from "axios";
+import { USER_API_ENDPOINT } from "../utils/data";
+import { useNavigate } from "react-router-dom";
+import { setUser } from "./redux/authSlice";
+
+
+
+
+const Profile = () => {
+  const { user } = useSelector((store) => store.user);
+  const [open, setOpen] = useState(false);
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  // console.log(user)
+  const [formData, setFormData] = useState({
+  fullname: "",
+  email: "",
+  bio: "",
+  address: "",
+  phonenumber: "",
+});
+
+useEffect(() => {
+  if (user) {
+    setFormData({
+      fullname: user.fullname || "",
+      email: user.email || "",
+      bio: user.profile?.bio || "",
+      address: user.profile?.address || "",
+      phonenumber: user.phonenumber || "",
+    });
+  }
+}, [user]);
+
+  const handleChange = (e) => {
+    setFormData(
+      {
+        ...formData, [e.target.name]: e.target.value
+      }
+    )
+  }
+
+  const handleSubmit = async(e) =>  {
+      try {
+        e.preventDefault();
+        const res = await axios.post(`${USER_API_ENDPOINT}/profile/update`, formData,{
+        withCredentials: true,
+      })
+      console.log(res.data)
+      if(!res.data.success){
+        toast.success("Some Error Ocures")
+      }
+      toast.success("Profile Update Successfully")
+      
+      dispatch(setUser(res.data.user));
+      setOpen(false);
+
+
+      } catch(error) {
+        console.log(error)
+        toast.success(error.response?.data?.message || "Server Error")
+      }
+  }
+
+  if (!user) {
+    return (
+      <div>
+        <Navbar />
+        <div className="min-h-screen flex items-center justify-center">
+          <p className="text-lg font-semibold">Loading profile...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <Navbar />
+      <div className="min-h-screen max-w-7xl flex justify-center mx-auto my-10">
+        <Card className="w-full max-w-3xl rounded-2xl shadow-lg">
+          <CardHeader className="flex flex-col items-center gap-4">
+            <Avatar className="h-28 w-28">
+              <AvatarImage src={user.profile.profilePhoto} />
+              <AvatarFallback className="text-2xl">
+                {user.fullname.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+
+            <div className="text-center">
+              <CardTitle className="text-2xl font-bold">
+                {user.fullname}
+              </CardTitle>
+              <p className="text-sm text-muted-foreground">{user.email}</p>
+              <Badge className="mt-2" variant="secondary">
+                {user.role.toUpperCase()}
+              </Badge>
+            </div>
+          </CardHeader>
+
+          <CardContent className="space-y-6">
+            {/* Bio */}
+            <div>
+              <h3 className="font-semibold mb-1">Bio</h3>
+              <p className="text-sm text-muted-foreground">
+                {user.profile.bio || "No bio added"}
+              </p>
+            </div>
+
+            {/* Personal Info */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <h4 className="font-semibold">Phone</h4>
+                <p className="text-sm text-muted-foreground">
+                  {user.phonenumber}
+                </p>
+              </div>
+              <div>
+                <h4 className="font-semibold">Address</h4>
+                <p className="text-sm text-muted-foreground">
+                  {user.profile.address}
+                </p>
+              </div>
+            </div>
+
+            {/* Orders */}
+            <div>
+              <h3 className="font-semibold mb-2">Orders</h3>
+              <p className="text-sm text-muted-foreground">
+                Total Orders:{" "}
+                <span className="font-medium">{user.orders.length}</span>
+              </p>
+            </div>
+
+            {/* Actions */}
+            <div className="flex gap-3 pt-4">
+              <Button>
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <Button>Edit Profile</Button>
+                  </PopoverTrigger>
+
+                  <PopoverContent className="w-96 space-y-4">
+                    <h3 className="text-lg font-semibold">Edit Profile</h3>
+
+                    <div className="space-y-2">
+                      <Label>Full Name</Label>
+                      <Input
+                        name="fullname"
+                        value={formData.fullname}
+                        onChange={handleChange}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>Email</Label>
+                      <Input
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>Phone</Label>
+                      <Input
+                        name="phonenumber"
+                        value={formData.phonenumber}
+                        onChange={handleChange}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>Bio</Label>
+                      <Textarea
+                        name="bio"
+                        value={formData.bio}
+                        onChange={handleChange}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>Address</Label>
+                      <Textarea
+                        name="address"
+                        value={formData.address}
+                        onChange={handleChange}
+                      />
+                    </div>
+
+                    <Button className="w-full" onClick={handleSubmit}>
+                      Save Changes
+                    </Button>
+                  </PopoverContent>
+                </Popover>
+              </Button>
+              <Button variant="outline">My Orders</Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+      <Footer />
+    </div>
+  );
+};
+
+export default Profile;

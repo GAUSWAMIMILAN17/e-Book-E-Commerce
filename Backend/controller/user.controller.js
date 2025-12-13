@@ -95,7 +95,7 @@ export const login = async (req, res) => {
       _id: user._id,
       fullname: user.fullname,
       email: user.email,
-      phoneNumber: user.phonenumber,
+      phonenumber: user.phonenumber,
       role: user.role,
       profile: {
         bio: user.profile.bio,
@@ -157,9 +157,9 @@ export const updateProfile = async (req, res) => {
   try {
     const { fullname, email, phonenumber, bio, address } = req.body;
 
-    const userId = req.user._id;
+    const userId = req.id;
     // console.log(userId)
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).populate("orders");
 
     if (!user) {
       return res.status(400).json({
@@ -167,12 +167,24 @@ export const updateProfile = async (req, res) => {
         success: false,
       });
     }
+    if (!user.profile) {
+      user.profile = {};
+    }
 
     if (fullname) user.fullname = fullname;
-    if (email) user.email = email;
-    if (phonenumber) user.phonenumber = phonenumber;
-    if (bio) user.profile.bio = bio;
-    if (address) user.profile.address = address;
+    if (email && email !== user.email) {
+      const exists = await User.findOne({ email });
+      if (exists) {
+        return res.status(400).json({
+          success: false,
+          message: "Email already exists",
+        });
+      }
+      user.email = email;
+    }
+    if (phonenumber) user.phonenumber = Number(phonenumber);
+    if (bio !== undefined) user.profile.bio = bio;
+    if (address !== undefined) user.profile.address = address;
 
     await user.save();
 
@@ -183,6 +195,7 @@ export const updateProfile = async (req, res) => {
       phonenumber: user.phonenumber,
       role: user.role,
       profile: user.profile,
+      orders: user.orders,
     };
 
     return res.status(200).json({
@@ -199,31 +212,28 @@ export const updateProfile = async (req, res) => {
   }
 };
 
-
-export const meLogin = async(req,res) => {
-  try{
-    const userId = req.id;  // ✔ get userId from token
+export const meLogin = async (req, res) => {
+  try {
+    const userId = req.id; // ✔ get userId from token
 
     const user = await User.findById(userId).populate("orders");
     // console.log(user)
-    if(!user) {
+    if (!user) {
       return res.status(404).json({
         success: false,
-        message: "User not found"
-      })
+        message: "User not found",
+      });
     }
 
     return res.status(200).json({
       success: true,
-      user
-    })
-
-
-  }catch (error){
-    console.log(error)
+      user,
+    });
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({
       success: false,
-      message: "Server Error"
-    })
+      message: "Server Error",
+    });
   }
-}
+};

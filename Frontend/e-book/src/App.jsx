@@ -14,6 +14,7 @@ import axios from "axios";
 import { USER_API_ENDPOINT } from "./utils/data";
 import { useDispatch } from "react-redux";
 import { setUser } from "./Components/redux/authSlice";
+import Profile from "./Components/Profile";
 
 function App() {
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ function App() {
         const res = await axios.get(`${USER_API_ENDPOINT}/me`, {
           withCredentials: true,
         });
-        console.log(res.data);
+        // console.log(res.data);
         dispatch(setUser(res.data.user));
       } catch (error) {
         dispatch(setUser(null));
@@ -45,6 +46,7 @@ function App() {
         <Route path="/myorders" element={<Myorders />} />
         <Route path="/detail/:id" element={<Details />} />
         <Route path="/myOrders/:id" element={<ViewOrders />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </div>
   );
