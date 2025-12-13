@@ -24,6 +24,7 @@ const Details = () => {
   const { singleBook } = useSelector((store) => store.books);
   const { user } = useSelector((store) => store.user);
   const [qty, setQty] = useState(1);
+  const [paymentMode, setPaymentMode] = useState("cod");
 
   const decrease = () => {
     if (qty > 1) {
@@ -51,18 +52,49 @@ const Details = () => {
     toast.success("Added to Cart Successfully!");
   };
 
-  const placeOrder = () => {
-    
-  }
+  const placeOrder = async() => {
+
+    try{
+      if (!user) {
+      toast.success("Plz Login and Try Again");
+      return;
+    }
+    if (!paymentMode) {
+      toast.success("Plz Payment Method Select");
+      return;
+    }
+
+    const orderData = {
+      books: [
+        {
+          book: singleBook._id,
+          quantity: qty,
+        },
+      ],
+      paymentMode: paymentMode,
+    };
+
+    const res = await axios.post(`${ORDER_API_ENDPOINT}/placeOrder`, orderData, {
+      withCredentials: true
+    })
+
+    console.log(res.data)
+    toast.success("Order placed Successfully")
+    } catch (error) {
+      console.log(error)
+      toast.success("Server Error")
+    }
+  };
+
 
   useEffect(() => {
     const Bookdetail = async () => {
       try {
-        console.log(id);
+        // console.log(id);
         const res = await axios.get(`${BOOK_API_ENDPOINT}/singleBook/${id}`, {
           withCredentials: true,
         });
-        console.log(res.data.book);
+        // console.log(res.data.book);
         if (res.data.success) {
           dispatch(setSingleBook(res.data.book));
         }
@@ -168,16 +200,20 @@ const Details = () => {
                             </button>
                           </div>
                           <div>
-                            <Label htmlFor="width" className="mb-3">Payment Mode</Label>
+                            <Label htmlFor="width" className="mb-3">
+                              Payment Mode
+                            </Label>
                             <select
                               id="payment"
+                              value={paymentMode}
+                              onChange={(e) => setPaymentMode(e.target.value)}
                               className="w-full rounded-md border px-3 py-2"
                             >
                               <optgroup
                                 className="bg-black"
                                 label="Payment Options"
                               >
-                                <option value="cod">COD</option>
+                                <option  value="cod">COD</option>
                                 <option value="online">Online</option>
                               </optgroup>
                             </select>
@@ -185,7 +221,11 @@ const Details = () => {
                         </div>
                       </div>
                     </div>
-                    <Button className="mt-4 bg-[#008ECC]" variant="primery">
+                    <Button
+                      onClick={placeOrder}
+                      className="mt-4 bg-[#008ECC]"
+                      variant="primery"
+                    >
                       Place Order
                     </Button>
                   </PopoverContent>
