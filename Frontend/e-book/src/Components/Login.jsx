@@ -19,18 +19,18 @@ import { toast } from "sonner";
 import { USER_API_ENDPOINT } from "../utils/data.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { setUser } from "./redux/authSlice.js";
+import { setLoading, setUser } from "./redux/authSlice.js";
 
 const Login = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [input, setInput] = useState({
     email: "",
     password: "",
     role: "",
   });
 
-  const { user } = useSelector((store) => store.user);
+  const {loading, user } = useSelector((store) => store.user);
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -40,6 +40,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
+      dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_ENDPOINT}/login`, input, {
         withCredentials: true,
       });
@@ -47,13 +48,14 @@ const Login = () => {
 
       if (res.data.success) {
         localStorage.setItem("token", res.data.token);
-        dispatch(setUser(res.data.user))
+        dispatch(setUser(res.data.user));
         // console.log(res.data.user)
         navigate("/");
         toast.success(res.data.message);
+        dispatch(setLoading(false));
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       toast.error("login  faild");
     }
   };
@@ -123,23 +125,32 @@ const Login = () => {
                   </div>
                 </RadioGroup>
 
-                <div className="text-right">
+                {/* <div className="text-right">
                   <Link
                     to="/forgot-password"
                     className="text-sm text-primary hover:underline"
                   >
                     Forgot password?
                   </Link>
-                </div>
+                </div> */}
+                {loading ? (
+                  <button
+                    disabled
+                    className="py-2 my-2 font-semibold text-white flex items-center justify-center w-full mx-auto bg-[#008ECC] opacity-70 cursor-not-allowed rounded-md"
+                  >
+                    <div className="h-5 w-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+                  </button>
+                ) : (
+                  <Button
+                    type="submit"
+                    className="w-full bg-[#008ECC] text-white"
+                    variant="primery"
+                    size="lg"
+                  >
+                    Sign In
+                  </Button>
+                )}
 
-                <Button
-                  type="submit"
-                  className="w-full bg-[#008ECC] text-white"
-                  variant="primery"
-                  size="lg"
-                >
-                  Sign In
-                </Button>
               </form>
 
               <div className="mt-6 text-center">

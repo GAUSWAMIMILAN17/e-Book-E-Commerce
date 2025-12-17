@@ -8,80 +8,80 @@ import { Button } from "./ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import {Label} from "./ui/label"
-import {Input} from "./ui/input"
-import {Textarea} from "./ui/textarea"
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
 import axios from "axios";
 import { USER_API_ENDPOINT } from "../utils/data";
 import { useNavigate } from "react-router-dom";
-import { setUser } from "./redux/authSlice";
-
-
-
+import { setLoading, setUser } from "./redux/authSlice";
 
 const Profile = () => {
-  const { user } = useSelector((store) => store.user);
+  const { user, loading } = useSelector((store) => store.user);
   const [open, setOpen] = useState(false);
 
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   // console.log(user)
   const [formData, setFormData] = useState({
-  fullname: "",
-  email: "",
-  bio: "",
-  address: "",
-  phonenumber: "",
-});
+    fullname: "",
+    email: "",
+    bio: "",
+    address: "",
+    phonenumber: "",
+  });
 
-useEffect(() => {
-  if (user) {
-    setFormData({
-      fullname: user.fullname || "",
-      email: user.email || "",
-      bio: user.profile?.bio || "",
-      address: user.profile?.address || "",
-      phonenumber: user.phonenumber || "",
-    });
-  }
-}, [user]);
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        fullname: user.fullname || "",
+        email: user.email || "",
+        bio: user.profile?.bio || "",
+        address: user.profile?.address || "",
+        phonenumber: user.phonenumber || "",
+      });
+    }
+  }, [user]);
 
   const handleChange = (e) => {
-    setFormData(
-      {
-        ...formData, [e.target.name]: e.target.value
-      }
-    )
-  }
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-  const handleSubmit = async(e) =>  {
-      try {
-        e.preventDefault();
-        const res = await axios.post(`${USER_API_ENDPOINT}/profile/update`, formData,{
-        withCredentials: true,
-      })
-      console.log(res.data)
-      if(!res.data.success){
-        toast.success("Some Error Ocures")
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      dispatch(setLoading(true));
+      const res = await axios.post(
+        `${USER_API_ENDPOINT}/profile/update`,
+        formData,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(res.data);
+      if (!res.data.success) {
+        toast.success("Some Error Ocures");
       }
-      toast.success("Profile Update Successfully")
-      
+      toast.success("Profile Update Successfully");
+
       dispatch(setUser(res.data.user));
+      dispatch(setLoading(false));
       setOpen(false);
-
-
-      } catch(error) {
-        console.log(error)
-        toast.success(error.response?.data?.message || "Server Error")
-      }
-  }
+    } catch (error) {
+      console.log(error);
+      toast.success(error.response?.data?.message || "Server Error");
+    }
+  };
 
   if (!user) {
     return (
       <div>
         <Navbar />
-        <div className="min-h-screen flex items-center justify-center">
-          <p className="text-lg font-semibold">Loading profile...</p>
+        <div className="my-5 flex items-center justify-center">
+          <div className="h-12 w-12 border-4 border-gray-300 border-t-[#008ECC] rounded-full animate-spin"></div>
         </div>
         <Footer />
       </div>
@@ -148,13 +148,13 @@ useEffect(() => {
 
             {/* Actions */}
             <div className="flex gap-3 pt-4">
-              <Button>
+              <Button variant="primery">
                 <Popover open={open} onOpenChange={setOpen}>
                   <PopoverTrigger asChild>
                     <Button>Edit Profile</Button>
                   </PopoverTrigger>
 
-                  <PopoverContent className="w-96 space-y-4">
+                  <PopoverContent className="w-96 m-5 space-y-4">
                     <h3 className="text-lg font-semibold">Edit Profile</h3>
 
                     <div className="space-y-2">
@@ -201,10 +201,18 @@ useEffect(() => {
                         onChange={handleChange}
                       />
                     </div>
-
-                    <Button className="w-full" onClick={handleSubmit}>
-                      Save Changes
-                    </Button>
+                    {loading ? (
+                      <button
+                        disabled
+                        className="py-2 my-2 font-semibold text-white flex items-center justify-center w-full mx-auto bg-black opacity-70 cursor-not-allowed rounded-md"
+                      >
+                        <div className="h-5 w-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+                      </button>
+                    ) : (
+                      <Button className="w-full" onClick={handleSubmit}>
+                        Save Changes
+                      </Button>
+                    )}
                   </PopoverContent>
                 </Popover>
               </Button>

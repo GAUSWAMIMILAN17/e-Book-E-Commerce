@@ -3,7 +3,6 @@ import express from "express"
 import {
   login,
   logout,
-  meLogin,
   register,updateProfile
 } from "../controller/user.controller.js";
 import authenticateToken from "../middleware/authenticateToken.js";
@@ -17,6 +16,5 @@ router.route("/logout").post(logout);
 router
   .route("/profile/update")
   .post(authenticateToken, updateProfile);
-router.route("/me").get(authenticateToken, meLogin);
 
 export default router;

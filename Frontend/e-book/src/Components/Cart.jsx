@@ -13,7 +13,7 @@ import axios from "axios";
 const Cart = () => {
   const dispatch = useDispatch();
   const { items } = useSelector((store) => store.cart);
-  const { user } = useSelector((store) => store.user);
+  const { user, loading } = useSelector((store) => store.user);
   const [paymentMode, setPaymentMode] = useState("cod")
 
   const clearCart = () => {

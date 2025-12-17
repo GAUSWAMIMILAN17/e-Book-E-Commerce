@@ -6,37 +6,34 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { BOOK_API_ENDPOINT } from "../utils/data";
 import { setAllBooks } from "./redux/bookSlice";
-
-
+import { setLoading } from "./redux/authSlice";
 
 const Home = () => {
+  const { allBooks } = useSelector((store) => store.books);
+  const { user, loading } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
 
-  const {allBooks} = useSelector((store)=> store.books)
-  const { user } = useSelector((store) => store.user);
-  const dispatch = useDispatch()
-
-  useEffect(()=> {
-      const fetchBooks = async() => {
-        try{
-        const res = await axios.get(`${BOOK_API_ENDPOINT}/getAllBooks`,{
-          withCredentials: true
-        })
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        dispatch(setLoading(true));
+        const res = await axios.get(`${BOOK_API_ENDPOINT}/getAllBooks`, {
+          withCredentials: true,
+        });
         // console.log(res.data)
 
-        if(res.data.success){
-          dispatch(setAllBooks(res.data.books))
+        if (res.data.success) {
+          dispatch(setAllBooks(res.data.books));
+          dispatch(setLoading(false));
+        } else {
+          console.log("failed to fetch books");
         }
-        else {
-          console.log("failed to fetch books")
-        }
-      } catch(error){
-        console.log(error)
+      } catch (error) {
+        console.log(error);
       }
-      }
-      fetchBooks();
-
-    }, [dispatch])
-
+    };
+    fetchBooks();
+  }, [dispatch]);
 
   return (
     <div>
@@ -57,19 +54,24 @@ const Home = () => {
         </div>
         <h1 className="text-3xl font-semibold">Featured Books</h1>
         <p className="text-[#666]">Hand-picked selections just for you</p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 mt-6">
-          {allBooks?.slice(0, 6).map((book) => (
-            <Bookcard
-              key={book._id}
-              id={book._id}
-              // image={book.image}
-              title={book.title}
-              price={book.price}
-              // oldPrice={book.oldPrice}  
-            />
-          ))}
-        </div>
+        {loading ? (
+          <div className="my-5 flex items-center justify-center">
+            <div className="h-12 w-12 border-4 border-gray-300 border-t-[#008ECC] rounded-full animate-spin"></div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 mt-6">
+            {allBooks?.slice(0, 6).map((book) => (
+              <Bookcard
+                key={book._id}
+                id={book._id}
+                // image={book.image}
+                title={book.title}
+                price={book.price}
+                // oldPrice={book.oldPrice}
+              />
+            ))}
+          </div>
+        )}
       </div>
       <Footer />
     </div>

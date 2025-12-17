@@ -17,23 +17,7 @@ import { setUser } from "./Components/redux/authSlice";
 import Profile from "./Components/Profile";
 
 function App() {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await axios.get(`${USER_API_ENDPOINT}/me`, {
-          withCredentials: true,
-        });
-        // console.log(res.data);
-        dispatch(setUser(res.data.user));
-      } catch (error) {
-        dispatch(setUser(null));
-        console.log(error);
-      }
-    };
-    fetchUser();
-  }, []);
-
+  
   return (
     <div>
       <Routes>
