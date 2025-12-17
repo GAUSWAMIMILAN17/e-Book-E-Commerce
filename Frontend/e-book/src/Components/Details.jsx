@@ -26,6 +26,7 @@ const Details = () => {
   const { user, loading } = useSelector((store) => store.user);
   const [qty, setQty] = useState(1);
   const [paymentMode, setPaymentMode] = useState("cod");
+  const [open, setOpen] = useState(false);
 
   const decrease = () => {
     if (qty > 1) {
@@ -84,6 +85,7 @@ const Details = () => {
 
       console.log(res.data);
       toast.success("Order placed Successfully");
+      setOpen(false);
     } catch (error) {
       console.log(error);
       toast.success("Server Error");
@@ -153,28 +155,10 @@ const Details = () => {
                   PublishedYear: <span>{singleBook?.publishedYear}</span>
                 </p>
               </div>
-              {/* <div className="flex items-center gap-3">
-              <button
-                onClick={decrease}
-                className="px-3 py-1 bg-gray-300 rounded-lg text-xl"
-              >
-                −
-              </button>
-
-              <span className="text-lg font-semibold w-6 text-center">
-                {qty}
-              </span>
-
-              <button
-                onClick={increase}
-                className="px-3 py-1 bg-gray-300 rounded-lg text-xl"
-              >
-                +
-              </button>
-            </div> */}
+              
               <div className="flex gap-3 my-3">
                 <Button className="bg-[#008ECC] text-white" variant="primery">
-                  <Popover>
+                  <Popover open={open} onOpenChange={setOpen}>
                     <PopoverTrigger asChild>
                       <Button variant="Primery">Buy</Button>
                     </PopoverTrigger>

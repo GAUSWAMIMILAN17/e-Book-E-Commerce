@@ -4,37 +4,48 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { USER_API_ENDPOINT } from "../utils/data";
 import axios from "axios";
 import { toast } from "sonner";
-import { setLoading, setUser } from "./redux/authSlice";
+import { setLoading, setLogout, setUser } from "./redux/authSlice";
 import { setAllMyOrders } from "./redux/orderSlice";
+import { setClearCart } from "./redux/cartSlice";
 
 const Navbar = () => {
+  // const [count , setCount] = useState(0)
+
   const { user } = useSelector((store) => store.user);
+  const { cart } = useSelector((store) => store.cart);
+  const { items } = useSelector((store) => store.cart);
   // console.log(user)
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const logoutHandler = async() => {
-    try{
-      const res = await axios.post(`${USER_API_ENDPOINT}/logout`,{}, {
-        withCredentials: true,
-      })
-      if(res.data.success){
-        dispatch(setUser(null))
-        dispatch(setAllMyOrders([]));
-        navigate("/")
-        toast.success(res.data.message)
+  const logoutHandler = async () => {
+    try {
+      const res = await axios.post(
+        `${USER_API_ENDPOINT}/logout`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.data.success) {
+        dispatch(setLogout());
+        dispatch(setClearCart())
+        dispatch(setAllMyOrders([]))
+        toast.success(res.data.message);
       }
-
-    } catch(error){
-      console.log(error.message)
+    } catch (error) {
+      console.log(error.message);
       toast.error("Error logging out. Please try again.");
     }
-  }
+  };
+  useEffect(() => {
+    dispatch(setLoading(false));
+  }, [dispatch]);
 
   return (
     <nav
@@ -53,7 +64,7 @@ const Navbar = () => {
               to="/"
               className={({ isActive }) =>
                 ` ${
-                  isActive ? "text-blue-600" : "text-gray-500"
+                  isActive ? "text-[#008ECC]" : "text-gray-500"
                 } transition-colors font-medium`
               }
             >
@@ -63,7 +74,7 @@ const Navbar = () => {
               to="/books"
               className={({ isActive }) =>
                 `${
-                  isActive ? "text-blue-600" : "text-gray-500"
+                  isActive ? "text-[#008ECC]" : "text-gray-500"
                 } transition-colors font-medium`
               }
             >
@@ -73,7 +84,7 @@ const Navbar = () => {
               to="/categories"
               className={({ isActive }) =>
                 ` ${
-                  isActive ? "text-blue-600" : "text-gray-500"
+                  isActive ? "text-[#008ECC]" : "text-gray-500"
                 } transition-colors font-medium`
               }
             >
@@ -83,7 +94,7 @@ const Navbar = () => {
               to="/myorders"
               className={({ isActive }) =>
                 `${
-                  isActive ? "text-blue-600" : "text-gray-500"
+                  isActive ? "text-[#008ECC]" : "text-gray-500"
                 } transition-colors font-medium`
               }
             >
@@ -96,6 +107,12 @@ const Navbar = () => {
               <Button variant="ghost" size="icon" className="relative w-15">
                 <ShoppingCart className="h-5 w-5 text-[#008ECC]" />
                 <span className="text-[#666666]">Cart</span>
+                <Badge
+                  variant="destructive"
+                  className="absolute -top-2 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
+                >
+                  {items.length}
+                </Badge>
               </Button>
             </Link>
             {user ? (
@@ -127,7 +144,9 @@ const Navbar = () => {
 
                     <div className="flex w-fit items-center gap-2 cursor-pointer">
                       <LogOut></LogOut>
-                      <Button onClick={logoutHandler} variant="link">Logout</Button>
+                      <Button onClick={logoutHandler} variant="link">
+                        Logout
+                      </Button>
                     </div>
                   </div>
                 </PopoverContent>

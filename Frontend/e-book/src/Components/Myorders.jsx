@@ -28,6 +28,7 @@ const Myorders = () => {
       }
     };
     fetchPlacedBook();
+    dispatch(setLoading(false))
   }, []);
 
   return (

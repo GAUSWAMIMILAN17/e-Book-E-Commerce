@@ -13,7 +13,7 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import axios from "axios";
 import { USER_API_ENDPOINT } from "../utils/data";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { setLoading, setUser } from "./redux/authSlice";
 
 const Profile = () => {
@@ -216,7 +216,7 @@ const Profile = () => {
                   </PopoverContent>
                 </Popover>
               </Button>
-              <Button variant="outline">My Orders</Button>
+              <Link to="/myorders" ><Button variant="outline">My Orders</Button></Link>
             </div>
           </CardContent>
         </Card>

@@ -6,15 +6,16 @@ import { Button } from "./ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { setClearCart } from "./redux/cartSlice";
 import { toast } from "sonner";
-import {Label} from "./ui/label"
+import { Label } from "./ui/label";
 import { ORDER_API_ENDPOINT } from "../utils/data";
 import axios from "axios";
+import { setLoading } from "./redux/authSlice";
 
 const Cart = () => {
   const dispatch = useDispatch();
   const { items } = useSelector((store) => store.cart);
   const { user, loading } = useSelector((store) => store.user);
-  const [paymentMode, setPaymentMode] = useState("cod")
+  const [paymentMode, setPaymentMode] = useState("cod");
 
   const clearCart = () => {
     if (!user) {
@@ -32,9 +33,11 @@ const Cart = () => {
 
   const placeOrder = async () => {
     try {
-      console.log("clicked");
+      // console.log("clicked");
+      dispatch(setLoading(true));
       if (!user) {
         toast.success("Plz Login and try again");
+        dispatch(setLoading(false))
         return;
       }
       if (items.length === 0) {
@@ -47,14 +50,20 @@ const Cart = () => {
           book: item._id,
           quantity: item.qauntity,
         })),
-        paymentMode: paymentMode
+        paymentMode: paymentMode,
       };
 
-      const res = await axios.post(`${ORDER_API_ENDPOINT}/placeOrder`, Orderdata, {
-        withCredentials: true
-      })
-      console.log(res.data)
-      toast.success("Order placed successfully")
+      const res = await axios.post(
+        `${ORDER_API_ENDPOINT}/placeOrder`,
+        Orderdata,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(res.data);
+      toast.success("Order placed successfully");
+      dispatch(setClearCart())
+      dispatch(setLoading(false));
     } catch (error) {
       console.log(error);
       toast.success("Server Error");
@@ -106,15 +115,24 @@ const Cart = () => {
             </select>
           </div>
 
-          <Button
-            onClick={placeOrder}
-            className="bg-[#008ECC] text-white w-full"
-            variant="primery"
-          >
-            Place Order
-          </Button>
+          {loading ? (
+            <button
+              disabled
+              className="py-2 my-2 font-semibold text-white flex items-center justify-center w-full mx-auto bg-[#008ECC] opacity-70 cursor-not-allowed rounded-md"
+            >
+              <div className="h-5 w-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+            </button>
+          ) : (
+            <Button
+              onClick={placeOrder}
+              className="bg-[#008ECC] text-white w-full"
+              variant="primery"
+            >
+              Place Order
+            </Button>
+          )}
 
-          <Button onClick={clearCart} className="mt-3 w-full" variant="primery">
+          <Button onClick={clearCart} className=" border border-gray-300 mt-3 w-full" variant="ghost">
             Clear Cart
           </Button>
         </div>
