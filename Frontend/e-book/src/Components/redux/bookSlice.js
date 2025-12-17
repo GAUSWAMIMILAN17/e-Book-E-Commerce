@@ -6,6 +6,7 @@ const initialState = {
     singleBook: null,
     filterBooks: [],
     setAllOrders: [],
+    filterAdminBooks: [],
 }
 
 const bookSlice = createSlice({
@@ -27,8 +28,7 @@ const bookSlice = createSlice({
         setFilterBooks(state, action){
             const category = action.payload
             console.log(category)
-            state.selectedCategory = category
-            // state.filterBooks = state.allBooks;
+            // state.selectedCategory = category
             if(category === "All"){
                 state.filterBooks = state.allBooks;
 
@@ -37,10 +37,22 @@ const bookSlice = createSlice({
                     (book) => book.category === category
                 )
             }
+        },
+        setFilterAdminBooks(state, action){
+            const category = action.payload
+            // console.log(category)
+            if(category === "All"){
+                state.filterAdminBooks = state.allAdminBooks;
+
+            } else {
+                state.filterAdminBooks = state.allAdminBooks.filter(
+                    (book) => book.category === category
+                )
+            }
         }
     }
 })
 
-export const {setAllAdminBooks,setAllBooks,setSingleBook,setFilterBooks,setAllPlacedBook} = bookSlice.actions
+export const {setAllAdminBooks,setFilterAdminBooks,setAllBooks,setSingleBook,setFilterBooks,setAllPlacedBook} = bookSlice.actions
 
 export default bookSlice.reducer

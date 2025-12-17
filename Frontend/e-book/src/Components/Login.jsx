@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { BookOpen } from "lucide-react";
 import { Button } from "./ui/button";
@@ -18,19 +18,20 @@ import axios from "axios";
 import { toast } from "sonner";
 import { USER_API_ENDPOINT } from "../utils/data.js";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import { setLoading, setUser } from "./redux/authSlice.js";
+import { setAllAdminBooks } from "./redux/bookSlice.js";
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const [input, setInput] = useState({
     email: "",
     password: "",
     role: "",
   });
 
-  const {loading, user } = useSelector((store) => store.user);
+  const { loading, user } = useSelector((store) => store.user);
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -41,75 +42,74 @@ const Login = () => {
 
     try {
       dispatch(setLoading(true));
+
       const res = await axios.post(`${USER_API_ENDPOINT}/login`, input, {
         withCredentials: true,
       });
-      // console.log(res.data)
 
       if (res.data.success) {
         localStorage.setItem("token", res.data.token);
         dispatch(setUser(res.data.user));
-        // console.log(res.data.user)
-        navigate("/");
+        // dispatch(setAllAdminBooks(res.data.books))
+
+
+        // 🔑 ROLE BASED REDIRECT (MAIN LOGIC)
+        if (res.data.user.role === "admin") {
+          navigate("/admin/home");
+        } else {
+          navigate("/");
+        }
+
         toast.success(res.data.message);
-        dispatch(setLoading(false));
       }
     } catch (error) {
-      console.log(error);
-      toast.error("login  faild");
+      toast.error("Login failed");
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
+  // 🔁 Page refresh / direct visit protection
   useEffect(() => {
     if (user) {
-      navigate("/");
+      if (user.role === "admin") {
+        navigate("/admin/home");
+      } else {
+        navigate("/");
+      }
     }
-  });
+  }, [user]);
 
   return (
     <div>
       <Navbar />
+      {/* UI same as yours */}
       <div className="min-h-screen flex items-center justify-center bg-[#f5f5f5] p-4">
         <div className="w-full max-w-md">
-          <Link
-            to="/"
-            className="flex items-center justify-center space-x-2 mb-8"
-          >
-            <BookOpen className="h-8 w-8 " />
-            <span className="text-2xl font-bold ">e-Book</span>
+          <Link to="/" className="flex items-center justify-center space-x-2 mb-8">
+            <BookOpen className="h-8 w-8" />
+            <span className="text-2xl font-bold">e-Book</span>
           </Link>
 
-          <Card className="shadow-card supports-backdrop-filter:bg-background/60">
+          <Card>
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl font-semibold">
-                Welcome Back
-              </CardTitle>
+              <CardTitle>Welcome Back</CardTitle>
               <CardDescription>Sign in to access your account</CardDescription>
             </CardHeader>
+
             <CardContent>
               <form onSubmit={submitHandler} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    value={input.email}
-                    name="email"
-                    id="email"
-                    type="email"
-                    placeholder="you@example.com"
-                    onChange={changeEventHandler}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
-                  <Input
-                    value={input.password}
-                    name="password"
-                    onChange={changeEventHandler}
-                    id="password"
-                    type="password"
-                    placeholder="••••••••"
-                  />
-                </div>
+                <Label>Email</Label>
+                <Input name="email" value={input.email} onChange={changeEventHandler} />
+
+                <Label>Password</Label>
+                <Input
+                  type="password"
+                  name="password"
+                  value={input.password}
+                  onChange={changeEventHandler}
+                />
+
                 <RadioGroup
                   onValueChange={(value) => setInput({ ...input, role: value })}
                   className="flex"
@@ -125,44 +125,16 @@ const Login = () => {
                   </div>
                 </RadioGroup>
 
-                {/* <div className="text-right">
-                  <Link
-                    to="/forgot-password"
-                    className="text-sm text-primary hover:underline"
-                  >
-                    Forgot password?
-                  </Link>
-                </div> */}
                 {loading ? (
-                  <button
-                    disabled
-                    className="py-2 my-2 font-semibold text-white flex items-center justify-center w-full mx-auto bg-[#008ECC] opacity-70 cursor-not-allowed rounded-md"
-                  >
-                    <div className="h-5 w-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <button disabled className="w-full py-2 bg-[#008ECC] opacity-70">
+                    <div className="h-5 w-5 border-4 border-white border-t-transparent animate-spin mx-auto" />
                   </button>
                 ) : (
-                  <Button
-                    type="submit"
-                    className="w-full bg-[#008ECC] text-white"
-                    variant="primery"
-                    size="lg"
-                  >
+                  <Button type="submit" className="w-full bg-[#008ECC]">
                     Sign In
                   </Button>
                 )}
-
               </form>
-
-              <div className="mt-6 text-center">
-                <p className="text-sm text-muted-foreground">
-                  Don't have an account?
-                  <Link to="/signup">
-                    <button className="text-primary font-medium hover:underline ms-2">
-                      Sign up
-                    </button>
-                  </Link>
-                </p>
-              </div>
             </CardContent>
           </Card>
         </div>

@@ -15,6 +15,12 @@ import { USER_API_ENDPOINT } from "./utils/data";
 import { useDispatch } from "react-redux";
 import { setUser } from "./Components/redux/authSlice";
 import Profile from "./Components/Profile";
+import AdminHome from "./Admin Components/AdminHome";
+import AdminBooks from "./Admin Components/AdminBooks";
+import AdminAddBook from "./Admin Components/AdminAddBook";
+import AdminOrders from "./Admin Components/AdminOrders";
+import AdminViewOrder from "./Admin Components/AdminViewOrder";
+import AdminBookDetail from "./Admin Components/AdminBookDetail";
 
 function App() {
   
@@ -31,6 +37,14 @@ function App() {
         <Route path="/detail/:id" element={<Details />} />
         <Route path="/myOrders/:id" element={<ViewOrders />} />
         <Route path="/profile" element={<Profile />} />
+
+        {/* Admin */}
+        <Route path="/admin/home" element={<AdminHome />} />
+        <Route path="/admin/books" element={<AdminBooks />} />
+        <Route path="/admin/books/:id" element={<AdminBookDetail />} />
+        <Route path="/admin/books/add" element={<AdminAddBook />} />
+        <Route path="/admin/allorders" element={<AdminOrders />} />
+        <Route path="/admin/allorders/:id" element={<AdminViewOrder />} />
       </Routes>
     </div>
   );
