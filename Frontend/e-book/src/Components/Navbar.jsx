@@ -269,7 +269,8 @@ const Navbar = () => {
                   </div>
 
                   <div className="flex flex-col my-2 text-muted-foreground">
-                    <Link to="/profile">
+                    {
+                      user && user.role === "admin" ? (<Link to="/admin/profile">
                       <Button
                         variant="ghost"
                         className="w-full justify-start gap-2 hover:bg-accent hover:text-accent-foreground"
@@ -277,7 +278,16 @@ const Navbar = () => {
                         <User2 className="h-4 w-4" />
                         Profile
                       </Button>
-                    </Link>
+                    </Link>) : (<Link to="/profile">
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start gap-2 hover:bg-accent hover:text-accent-foreground"
+                      >
+                        <User2 className="h-4 w-4" />
+                        Profile
+                      </Button>
+                    </Link>)
+                    }
 
                     <Button
                       onClick={logoutHandler}
