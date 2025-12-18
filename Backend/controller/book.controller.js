@@ -15,6 +15,15 @@ export const addNewBook = async (req, res) => {
       publishedYear,
     } = req.body;
 
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "Cover image is required",
+      });
+    }
+
+    const coverImage = req.file.path
+
     if (!title || !author || !category) {
       return res.status(400).json({
         message: "Missing Field Is Required",
@@ -31,6 +40,7 @@ export const addNewBook = async (req, res) => {
       price,
       language,
       publishedYear,
+      coverImage
     });
 
     await book.save();
@@ -142,12 +152,21 @@ export const deleteBook = async (req, res) => {
 export const updateBook = async (req, res) => {
   try {
     const {id} = req.params
-    console.log(id)
+    // console.log(id)
 
     let book = await Book.findById(id)
-    console.log(book)
+    // console.log(book)
 
     const {title, author, description, category, pages, price, language, publishedYear } = req.body
+
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "Cover image is required",
+      });
+    }
+
+    const coverImage = req.file.path
 
     book.title = title ?? book.title;
     book.author = author ?? book.author;
@@ -157,6 +176,7 @@ export const updateBook = async (req, res) => {
     book.price = price ?? book.price;
     book.language = language ?? book.language;
     book.publishedYear = publishedYear ?? book.publishedYear;
+    book.coverImage = coverImage ?? book.coverImage;
 
     await book.save();
 

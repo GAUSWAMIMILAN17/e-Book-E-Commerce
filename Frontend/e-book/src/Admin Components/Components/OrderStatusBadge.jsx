@@ -15,6 +15,10 @@ export function OrderStatusBadge({ status }) {
       label: "Delivered",
       className: "border-green-400 text-green-600 bg-green-50",
     },
+    shipped: {
+      label: "Shipped",
+      className: "border-purple-400 text-purple-600 bg-purple-50",
+    },
     cancelled: {
       label: "Cancelled",
       className: "border-red-400 text-red-600 bg-red-50",

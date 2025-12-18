@@ -5,8 +5,7 @@ const bookSchema = new mongoose.Schema({
   author: String,
   description: String,
   category: String,
-  coverImage: String,      // cloudinary URL
-  fileUrl: String,         // PDF file URL
+  coverImage: String,      // cloudinary URL 
   pages: Number,
   price: { type: Number, default: 0 },  // free = 0
   language: String,

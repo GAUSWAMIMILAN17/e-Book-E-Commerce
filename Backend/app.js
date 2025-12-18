@@ -1,5 +1,8 @@
-import express from "express"
 import dotenv from "dotenv"
+dotenv.config({})
+
+
+import express from "express"
 import cors from "cors"
 import connectDB from "./utils/db.js"
 import userRoute from "./routes/user.routes.js"
@@ -8,9 +11,7 @@ import BookRoute from "./routes/books.routes.js"
 import orderRoute from "./routes/order.routes.js"
 
 
-dotenv.config({})
 const app = express()
-
 app.use(cookieParser());
 
 

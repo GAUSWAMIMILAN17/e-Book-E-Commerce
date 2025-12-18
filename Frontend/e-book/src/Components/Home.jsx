@@ -7,10 +7,11 @@ import axios from "axios";
 import { BOOK_API_ENDPOINT } from "../utils/data";
 import { setAllBooks } from "./redux/bookSlice";
 import { setLoading } from "./redux/authSlice";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const { allBooks } = useSelector((store) => store.books);
-  const { user, loading } = useSelector((store) => store.user);
+  const { loading } = useSelector((store) => store.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,59 +21,83 @@ const Home = () => {
         const res = await axios.get(`${BOOK_API_ENDPOINT}/getAllBooks`, {
           withCredentials: true,
         });
-        // console.log(res.data)
-
         if (res.data.success) {
           dispatch(setAllBooks(res.data.books));
-          dispatch(setLoading(false));
-        } else {
-          console.log("failed to fetch books");
         }
       } catch (error) {
         console.log(error);
+      } finally {
+        dispatch(setLoading(false));
       }
     };
     fetchBooks();
   }, [dispatch]);
 
   return (
-    <div>
+    <div className="bg-gray-50">
       <Navbar />
-      <div className="min-h-screen max-w-7xl my-10 mx-auto">
-        <div className="bg-[#212844] my-8 p-7 flex justify-between text-white rounded-2xl pb-20">
-          <div className="mt-20 ms-15">
-            <h1 className="text-5xl py-2 font-semibold">Discover Your Next </h1>
-            <h2 className="text-3xl py-3">Your Ultimate E-Book</h2>
-            <p className="opacity-60">
-              Explore our curated collection of books in a warm, coffee-inspired
-              atmosphere. Read, learn, and grow with e-Book.
+
+      {/* HERO SECTION */}
+      <section className="bg-[#212844] text-white">
+        <div className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-10 items-center">
+          
+          <div className="space-y-6">
+            <h1 className="text-4xl md:text-5xl font-bold leading-tight">
+              Discover Your Next <br />
+              <span className="text-[#008ECC]">Favorite E-Book</span>
+            </h1>
+
+            <p className="text-gray-300 max-w-lg">
+              Explore our curated collection of books in a warm, modern reading
+              experience. Learn, grow, and enjoy knowledge anytime.
             </p>
+
+            <Link to="/books">
+            <button className="px-6 py-3 bg-[#008ECC] rounded-lg font-medium hover:opacity-90 transition">
+              Explore Books
+            </button></Link>
           </div>
-          <div className="">
-            <img src="logo.png" className="w-80 h-80 opacity-50" alt="" />
+
+          <div className="flex justify-center">
+            <img
+              src="logo.png"
+              alt="E-Book"
+              className="w-72 h-72 opacity-60"
+            />
           </div>
+
         </div>
-        <h1 className="text-3xl font-semibold">Featured Books</h1>
-        <p className="text-[#666]">Hand-picked selections just for you</p>
+      </section>
+
+      {/* FEATURED BOOKS */}
+      <section className="max-w-7xl mx-auto px-6 py-16">
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-gray-800">
+            Featured Books
+          </h2>
+          <p className="text-gray-500 mt-1">
+            Hand-picked selections just for you
+          </p>
+        </div>
+
         {loading ? (
-          <div className="my-5 flex items-center justify-center">
+          <div className="flex justify-center py-20">
             <div className="h-12 w-12 border-4 border-gray-300 border-t-[#008ECC] rounded-full animate-spin"></div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 mt-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {allBooks?.slice(0, 6).map((book) => (
               <Bookcard
                 key={book._id}
                 id={book._id}
-                // image={book.image}
                 title={book.title}
                 price={book.price}
-                // oldPrice={book.oldPrice}
               />
             ))}
           </div>
         )}
-      </div>
+      </section>
+
       <Footer />
     </div>
   );

@@ -24,6 +24,10 @@ const AdminHome = () => {
   const { allAdminBooks } = useSelector((store) => store.books);
   const {allAdminGetAllOrders} = useSelector((store)=> store.orders)
 
+  const deliveredOrdersCount = allAdminGetAllOrders.filter(
+  (order) => order.orderStatus === "delivered"
+).length;
+
   const stats = [
     {
       icon: BookOpen,
@@ -40,7 +44,7 @@ const AdminHome = () => {
     {
       icon: TrendingUp,
       label: "Delivered",
-      value: 280,
+      value: deliveredOrdersCount,
       color: "text-green-600",
     },
   ];

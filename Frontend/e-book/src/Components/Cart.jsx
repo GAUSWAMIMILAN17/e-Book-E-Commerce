@@ -19,11 +19,11 @@ const Cart = () => {
 
   const clearCart = () => {
     if (!user) {
-      toast.success("plz login and try again");
+      toast.success("Please login and try again");
       return;
     }
     dispatch(setClearCart());
-    toast.success("Clear Cart Successfully!");
+    toast.success("Cart cleared successfully!");
   };
 
   const totalAmount = items.reduce(
@@ -33,92 +33,97 @@ const Cart = () => {
 
   const placeOrder = async () => {
     try {
-      // console.log("clicked");
       dispatch(setLoading(true));
+
       if (!user) {
-        toast.success("Plz Login and try again");
-        dispatch(setLoading(false))
-        return;
-      }
-      if (items.length === 0) {
-        toast.error("Cart is empty");
+        toast.success("Please login and try again");
+        dispatch(setLoading(false));
         return;
       }
 
-      const Orderdata = {
+      if (items.length === 0) {
+        toast.error("Cart is empty");
+        dispatch(setLoading(false));
+        return;
+      }
+
+      const orderData = {
         books: items.map((item) => ({
           book: item._id,
           quantity: item.qauntity,
         })),
-        paymentMode: paymentMode,
+        paymentMode,
       };
 
-      const res = await axios.post(
-        `${ORDER_API_ENDPOINT}/placeOrder`,
-        Orderdata,
-        {
-          withCredentials: true,
-        }
-      );
-      console.log(res.data);
+      await axios.post(`${ORDER_API_ENDPOINT}/placeOrder`, orderData, {
+        withCredentials: true,
+      });
+
       toast.success("Order placed successfully");
-      dispatch(setClearCart())
+      dispatch(setClearCart());
       dispatch(setLoading(false));
     } catch (error) {
       console.log(error);
-      toast.success("Server Error");
+      toast.error("Server error");
+      dispatch(setLoading(false));
     }
   };
 
   return (
     <div>
       <Navbar />
-      <div className="max-w-7xl mx-auto my-5 flex justify-between">
-        <div className="min-h-screen w-2/3">
-          <div className=" my-5">
+
+      {/* MAIN GRID */}
+      <div className="max-w-7xl mx-auto my-6 grid grid-cols-1 lg:grid-cols-3 gap-6 px-4">
+
+        {/* LEFT : CART ITEMS */}
+        <div className="lg:col-span-2 min-h-screen">
+          <div className="mb-5">
             <h1 className="text-3xl font-bold">Shopping Cart</h1>
-            <p className="text-[#818388]">
+            <p className="text-gray-500">
               {items.length} items currently in your cart
             </p>
           </div>
 
-          <div className="flex gap-3 col-span-2">
-            {items.length === 0 ? (
-              <p className="text-gray-500">Your cart is empty</p>
-            ) : (
-              items.map((it) => <Cartcard key={it._id} item={it} />)
-            )}
-          </div>
+          {items.length === 0 ? (
+            <p className="text-gray-500">Your cart is empty</p>
+          ) : (
+            <div className="flex flex-wrap gap-4">
+              {items.map((item) => (
+                <Cartcard key={item._id} item={item} />
+              ))}
+            </div>
+          )}
         </div>
 
-        <div className="border-l ps-10 border-gray-400 w-1/3 p-4">
-          <h1 className="text-xl font-semibold">Order Summary</h1>
-          <hr className="my-3" />
-          <div className="my-4">
-            <p className="mb-2">Subtotal ({items.length} items)</p>
+        {/* RIGHT : ORDER SUMMARY */}
+        <div className="lg:col-span-1 border rounded-xl p-6 h-fit sticky top-24 bg-white shadow-sm">
+          <h2 className="text-xl font-semibold mb-3">Order Summary</h2>
+          <hr className="mb-4" />
+
+          <div className="mb-4">
+            <p className="text-gray-600 mb-1">
+              Subtotal ({items.length} items)
+            </p>
             <p className="text-2xl font-bold">₹{totalAmount}</p>
           </div>
-          <div className="my-4">
-            <Label htmlFor="width" className="mb-3">
-              Payment Mode
-            </Label>
+
+          <div className="mb-4">
+            <Label className="mb-2 block">Payment Mode</Label>
             <select
-              id="payment"
               value={paymentMode}
               onChange={(e) => setPaymentMode(e.target.value)}
               className="w-full rounded-md border px-3 py-2"
             >
-              <optgroup className="bg-white" label="Payment Options">
-                <option value="cod">COD</option>
-                <option value="online">Online</option>
-              </optgroup>
+              <option value="cod">Cash on Delivery</option>
+              <option value="online">Online Payment</option>
             </select>
           </div>
 
           {loading ? (
             <button
               disabled
-              className="py-2 my-2 font-semibold text-white flex items-center justify-center w-full mx-auto bg-[#008ECC] opacity-70 cursor-not-allowed rounded-md"
+              className="w-full py-2 bg-[#008ECC] text-white rounded-md opacity-70 flex justify-center"
             >
               <div className="h-5 w-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
             </button>
@@ -126,17 +131,21 @@ const Cart = () => {
             <Button
               onClick={placeOrder}
               className="bg-[#008ECC] text-white w-full"
-              variant="primery"
             >
               Place Order
             </Button>
           )}
 
-          <Button onClick={clearCart} className=" border border-gray-300 mt-3 w-full" variant="ghost">
+          <Button
+            onClick={clearCart}
+            variant="ghost"
+            className="w-full mt-3 border"
+          >
             Clear Cart
           </Button>
         </div>
       </div>
+
       <Footer />
     </div>
   );

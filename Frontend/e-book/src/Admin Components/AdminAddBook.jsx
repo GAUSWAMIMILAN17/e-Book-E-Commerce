@@ -34,33 +34,48 @@ const AdminAddBook = () => {
     language: "",
     publishedYear: "",
     // stock: "",
-    // coverImage: "",
+    coverImage: null,
   });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+  const fileHandler = (e) => {
+  setForm({ ...form, coverImage: e.target.files[0] });
+};
 
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      dispatch(setLoading(true));
+    dispatch(setLoading(true));
 
-      const res = await axios.post(`${BOOK_API_ENDPOINT}/addNewBook`, form, {
+    const formData = new FormData();
+    formData.append("title", form.title);
+    formData.append("author", form.author);
+    formData.append("description", form.description);
+    formData.append("category", form.category);
+    formData.append("pages", form.pages);
+    formData.append("price", form.price);
+    formData.append("language", form.language);
+    formData.append("publishedYear", form.publishedYear);
+    formData.append("coverImage", form.coverImage); // 👈 IMPORTANT
+
+    const res = await axios.post(
+      `${BOOK_API_ENDPOINT}/addNewBook`,
+      formData,
+      {
+        
         withCredentials: true,
-      });
-
-      console.log(res.data);
-      if (res.data.success) {
-        toast.success("Book Add SuccessFully");
-        dispatch(setLoading(false));
       }
+    );
 
-      // After submit redirect
+    if (res.data.success) {
+      toast.success("Book Added Successfully");
       navigate("/admin/books");
-    } catch (error) {
+    }
+  }  catch (error) {
       console.log(error);
-      toast.success(error);
+      toast.error(error.message);
       dispatch(setLoading(false));
     }
   };
@@ -181,19 +196,19 @@ const AdminAddBook = () => {
               </div>
 
               {/* Cover Image */}
-              {/* <div className="space-y-2">
-              <Label>Cover Image URL</Label>
-              <Input
-                placeholder="https://example.com/image.jpg"
-                value={form.coverImage}
-                onChange={(e) =>
-                  setForm({ ...form, coverImage: e.target.value })
-                }
-              />
-              <p className="text-xs text-muted-foreground">
-                Optional field
-              </p>
-            </div> */}
+              <div className="space-y-2">
+                <Label>Cover Image</Label>
+                <Input
+                  type="file"
+                  name="coverImage"
+                  accept="image/*"
+                  onChange={fileHandler
+                  }
+                />
+                <p className="text-xs text-muted-foreground">
+                  Image file upload (jpg, png, jpeg)
+                </p>
+              </div>
 
               {/* Description */}
               <div className="space-y-2">

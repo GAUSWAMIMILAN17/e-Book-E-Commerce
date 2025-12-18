@@ -5,7 +5,7 @@ const initialState = {
     allMyOrders: [],
     singleOrder: null,
     allAdminGetAllOrders: [],
-    singleAdminOrder: [],
+    singleAdminOrder:null,
     adminOrdersFilter: []
 
 }

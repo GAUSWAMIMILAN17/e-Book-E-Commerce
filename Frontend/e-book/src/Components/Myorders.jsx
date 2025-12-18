@@ -34,8 +34,8 @@ const Myorders = () => {
   return (
     <div>
       <Navbar />
-      <div className="min-h-screen max-w-7xl mx-auto">
-        <div className="my-5">
+      <div className="min-h-screen max-w-7xl mb-15 mx-auto">
+        <div className="my-5 max-w-6xl mx-auto">
           <h1 className="text-2xl font-semibold">
             My Orders : {allMyOrders.length}
           </h1>
@@ -47,7 +47,7 @@ const Myorders = () => {
           </div>
         ) : (
           <div>
-            {allMyOrders.slice(0, 6).map((order) => (
+            {allMyOrders.map((order) => (
               <Ordercard
                 key={order._id}
                 id={order._id}

@@ -48,7 +48,7 @@ const AdminOrders = () => {
         const res = await axios.get(`${ORDER_API_ENDPOINT}/getAllOrders`, {
           withCredentials: true,
         });
-        console.log(res.data.orders);
+        // console.log(res.data.orders);
         if (res.data.success) {
           dispatch(setAllAdminGetAllOrders(res.data.orders));
           dispatch(setAdminOrdersFilter("All Status"));
@@ -117,7 +117,7 @@ const AdminOrders = () => {
               <SelectItem value="confirmed">Confirmed</SelectItem>
               <SelectItem value="shipped">Shipped</SelectItem>
               <SelectItem value="delivered">Delivered</SelectItem>
-              <SelectItem value="rejected">Cancelled</SelectItem>
+              <SelectItem value="cancelled">Cancelled</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -176,7 +176,7 @@ const AdminOrders = () => {
 
                     <TableCell className="text-right">
                       <Button asChild variant="ghost" size="sm">
-                        <Link to={`${order.id}`}>
+                        <Link to={`${order._id}`}>
                           <Eye className="h-4 w-4 mr-1" />
                           View
                         </Link>
