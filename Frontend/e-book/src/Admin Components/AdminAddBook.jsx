@@ -13,9 +13,16 @@ import {
 } from "../Components/ui/card";
 import Footer from "../Components/Footer";
 import Navbar from "../Components/Navbar";
+import { BOOK_API_ENDPOINT } from "../utils/data";
+import axios from "axios";
+import { toast } from "sonner";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "../Components/redux/authSlice";
 
 const AdminAddBook = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading } = useSelector((store) => store.user);
 
   const [form, setForm] = useState({
     title: "",
@@ -23,81 +30,99 @@ const AdminAddBook = () => {
     price: "",
     description: "",
     category: "",
-    stock: "",
-    coverImage: "",
+    pages: "",
+    language: "",
+    publishedYear: "",
+    // stock: "",
+    // coverImage: "",
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-    // 🔹 For now just console log (UI only)
-    console.log("Book Data:", form);
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      dispatch(setLoading(true));
 
-    // After submit redirect
-    navigate("/books");
+      const res = await axios.post(`${BOOK_API_ENDPOINT}/addNewBook`, form, {
+        withCredentials: true,
+      });
+
+      console.log(res.data);
+      if (res.data.success) {
+        toast.success("Book Add SuccessFully");
+        dispatch(setLoading(false));
+      }
+
+      // After submit redirect
+      navigate("/admin/books");
+    } catch (error) {
+      console.log(error);
+      toast.success(error);
+      dispatch(setLoading(false));
+    }
   };
 
   return (
     <div>
-        <Navbar />
-    <div className="container mx-auto px-4 py-8 max-w-2xl">
-      {/* Back Button */}
-      <Button variant="ghost" asChild className="mb-6 gap-2">
-        <Link to="/admin/books">
-          <ArrowLeft className="h-4 w-4" />
-          Back to Books
-        </Link>
-      </Button>
+      <Navbar />
+      <div className="container mx-auto px-4 py-8 max-w-2xl">
+        {/* Back Button */}
+        <Button variant="ghost" asChild className="mb-6 gap-2">
+          <Link to="/admin/books">
+            <ArrowLeft className="h-4 w-4" />
+            Back to Books
+          </Link>
+        </Button>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Add New Book</CardTitle>
-        </CardHeader>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl">Add New Book</CardTitle>
+          </CardHeader>
 
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Title */}
-            <div className="space-y-2">
-              <Label>Book Title *</Label>
-              <Input
-                placeholder="Enter book title"
-                value={form.title}
-                onChange={(e) =>
-                  setForm({ ...form, title: e.target.value })
-                }
-                required
-              />
-            </div>
-
-            {/* Author */}
-            <div className="space-y-2">
-              <Label>Author *</Label>
-              <Input
-                placeholder="Enter author name"
-                value={form.author}
-                onChange={(e) =>
-                  setForm({ ...form, author: e.target.value })
-                }
-                required
-              />
-            </div>
-
-            {/* Price / Stock / Category */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Title */}
               <div className="space-y-2">
-                <Label>Price (₹) *</Label>
+                <Label>Book Title *</Label>
                 <Input
-                  type="number"
-                  placeholder="299"
-                  value={form.price}
-                  onChange={(e) =>
-                    setForm({ ...form, price: e.target.value })
-                  }
+                  placeholder="Enter book title"
+                  name="title"
+                  value={form.title}
+                  onChange={handleChange}
                   required
                 />
               </div>
 
+              {/* Author */}
               <div className="space-y-2">
+                <Label>Author *</Label>
+                <Input
+                  name="author"
+                  placeholder="Enter author name"
+                  value={form.author}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              {/* Price / Stock / Category */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label>Price (₹) *</Label>
+                  <Input
+                    type="number"
+                    name="price"
+                    placeholder="299"
+                    value={form.price}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                {/* <div className="space-y-2">
                 <Label>Stock *</Label>
                 <Input
                   type="number"
@@ -108,23 +133,55 @@ const AdminAddBook = () => {
                   }
                   required
                 />
+              </div> */}
+                <div className="space-y-2">
+                  <Label>Pages *</Label>
+                  <Input
+                    type="number"
+                    name="pages"
+                    placeholder="0"
+                    value={form.pages}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Language *</Label>
+                  <Input
+                    type="string"
+                    name="language"
+                    placeholder="language"
+                    value={form.language}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>publishedYear *</Label>
+                  <Input
+                    type="number"
+                    name="publishedYear"
+                    placeholder="2025"
+                    value={form.publishedYear}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Category *</Label>
+                  <Input
+                    placeholder="Technology"
+                    name="category"
+                    value={form.category}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
               </div>
 
-              <div className="space-y-2">
-                <Label>Category *</Label>
-                <Input
-                  placeholder="Technology"
-                  value={form.category}
-                  onChange={(e) =>
-                    setForm({ ...form, category: e.target.value })
-                  }
-                  required
-                />
-              </div>
-            </div>
-
-            {/* Cover Image */}
-            <div className="space-y-2">
+              {/* Cover Image */}
+              {/* <div className="space-y-2">
               <Label>Cover Image URL</Label>
               <Input
                 placeholder="https://example.com/image.jpg"
@@ -136,37 +193,45 @@ const AdminAddBook = () => {
               <p className="text-xs text-muted-foreground">
                 Optional field
               </p>
-            </div>
+            </div> */}
 
-            {/* Description */}
-            <div className="space-y-2">
-              <Label>Description *</Label>
-              <Textarea
-                placeholder="Enter book description..."
-                rows={5}
-                value={form.description}
-                onChange={(e) =>
-                  setForm({ ...form, description: e.target.value })
-                }
-                required
-              />
-            </div>
+              {/* Description */}
+              <div className="space-y-2">
+                <Label>Description *</Label>
+                <Textarea
+                  placeholder="Enter book description..."
+                  rows={5}
+                  name="description"
+                  value={form.description}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-            {/* Buttons */}
-            <div className="flex gap-4 pt-4">
-              <Button type="submit" className="flex-1">
-                Add Book
-              </Button>
+              {/* Buttons */}
+              <div className="flex gap-4 pt-4">
+                {loading ? (
+                  <button
+                    disabled
+                    className="py-2 my-2 font-semibold text-white flex items-center justify-center w-full mx-auto bg-[#008ECC] opacity-70 cursor-not-allowed rounded-md"
+                  >
+                    <div className="h-5 w-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+                  </button>
+                ) : (
+                  <Button type="submit" className="flex-1">
+                    Add Book
+                  </Button>
+                )}
 
-              <Button type="button" variant="outline" asChild>
-                <Link to="/books">Cancel</Link>
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
-    <Footer />
+                <Button type="button" variant="outline" asChild>
+                  <Link to="/admin/books">Cancel</Link>
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+      <Footer />
     </div>
   );
 };

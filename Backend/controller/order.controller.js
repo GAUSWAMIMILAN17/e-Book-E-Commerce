@@ -116,7 +116,7 @@ export const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find()
       .populate("books.book")
-      .populate("user", "name email");
+      .populate("user", "fullname email");
     return res.status(200).json({ success: true, orders });
   } catch (error) {
     console.log(error);

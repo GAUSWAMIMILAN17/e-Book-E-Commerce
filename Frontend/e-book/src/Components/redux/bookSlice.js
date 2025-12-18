@@ -7,6 +7,7 @@ const initialState = {
     filterBooks: [],
     setAllOrders: [],
     filterAdminBooks: [],
+    adminSingleBook: null,
 }
 
 const bookSlice = createSlice({
@@ -49,10 +50,13 @@ const bookSlice = createSlice({
                     (book) => book.category === category
                 )
             }
+        },
+        setAdminSingleBook(state, action) {
+            state.adminSingleBook = action.payload
         }
     }
 })
 
-export const {setAllAdminBooks,setFilterAdminBooks,setAllBooks,setSingleBook,setFilterBooks,setAllPlacedBook} = bookSlice.actions
+export const {setAllAdminBooks,setAdminSingleBook,setFilterAdminBooks,setAllBooks,setSingleBook,setFilterBooks,setAllPlacedBook} = bookSlice.actions
 
 export default bookSlice.reducer

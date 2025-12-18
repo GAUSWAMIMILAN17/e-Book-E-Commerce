@@ -5,7 +5,9 @@ const initialState = {
     allMyOrders: [],
     singleOrder: null,
     allAdminGetAllOrders: [],
-    singleAdminOrder: []
+    singleAdminOrder: [],
+    adminOrdersFilter: []
+
 }
 
 const orderSlice = createSlice({
@@ -26,11 +28,22 @@ const orderSlice = createSlice({
         },
         setPlacedOrder(state, action) {
             state.singleOrder = action.payload;
+        },
+        setAdminOrdersFilter(state, action) {
+            const status = action.payload
+            if (status === "All Status"){
+                state.adminOrdersFilter = state.allAdminGetAllOrders
+            } else {
+                state.adminOrdersFilter = state.allAdminGetAllOrders.filter(
+                    (order) => order.orderStatus === status
+                )
+            }
         }
+    
     }
 })
 
-export const {setAllAdminGetAllOrders,setAllMyOrders,setSingleAdminOrder,setSingleOrder, setPlacedOrder} = orderSlice.actions
+export const {setAllAdminGetAllOrders,setAllMyOrders,setSingleAdminOrder,setSingleOrder, setPlacedOrder,setAdminOrdersFilter} = orderSlice.actions
 
 export default orderSlice.reducer
 

@@ -69,7 +69,7 @@ const AdminHome = () => {
         const res = await axios.get(`${ORDER_API_ENDPOINT}/getAllOrders`, {
           withCredentials: true
         })
-        console.log(res.data.orders)
+        // console.log(res.data.orders)
         if(res.data.success){
           dispatch(setAllAdminGetAllOrders(res.data.orders))
           dispatch(setLoading(false))
