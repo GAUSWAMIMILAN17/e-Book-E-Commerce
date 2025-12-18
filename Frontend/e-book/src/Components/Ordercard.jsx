@@ -1,3 +1,46 @@
+// import React from "react";
+// import { Button } from "./ui/button";
+// import { Badge } from "./ui/badge";
+// import { Link } from "react-router-dom";
+// import {OrderStatusBadge} from "../Admin Components/Components/OrderStatusBadge"
+
+// const Ordercard = ({
+//   status, title, phonenumber, email, payment, mode, amount, id ,address
+// }) => {
+//   return (
+//     <div className="my-5 bg-[#f5f5f5] border max-w-5xl rounded-2xl p-3 px-10">
+//       <div className="flex gap-3">
+//         <h1 className="font-semibold my-">{title} </h1>
+//         <OrderStatusBadge status={status} />
+//       </div>
+//       <div className="flex justify-between my-2">
+//         <div className="border w-fit rounded-full">
+//           <img
+//             src="logo.png"
+//             className="w-25 h-25 object-cover rounded-full"
+//             alt=""
+//           />
+//         </div>
+//         <div className="ms-2 my-auto">
+//           <h2>{address}</h2>
+//           <h2>{phonenumber}</h2>
+//           <p>{email}</p>
+//           <p>Payment : {payment}</p>
+//         </div>
+//         <div>
+//           <h2>{mode}</h2>
+//           <p>{amount}</p>
+//           <Link to={`/myOrders/${id}`}><Button>View Order</Button></Link>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Ordercard;
+
+// --------------------------------------------------------------------------------------------------------------------------
+
 import React from "react";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";

@@ -21,6 +21,7 @@ import AdminAddBook from "./Admin Components/AdminAddBook";
 import AdminOrders from "./Admin Components/AdminOrders";
 import AdminViewOrder from "./Admin Components/AdminViewOrder";
 import AdminBookDetail from "./Admin Components/AdminBookDetail";
+import AdminProfile from "./Admin Components/AdminProfile";
 
 function App() {
   
@@ -45,6 +46,7 @@ function App() {
         <Route path="/admin/books/add" element={<AdminAddBook />} />
         <Route path="/admin/allorders" element={<AdminOrders />} />
         <Route path="/admin/allorders/:id" element={<AdminViewOrder />} />
+        <Route path="/admin/profile" element={<AdminProfile />} />
       </Routes>
     </div>
   );

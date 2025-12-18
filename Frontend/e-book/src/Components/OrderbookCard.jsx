@@ -1,6 +1,6 @@
 const OrderBookCard = ({ item }) => {
   return (
-    <div className="bg-white border rounded-xl p-4 shadow-sm hover:shadow-md transition">
+    <div className="bg-white border rounded-b-xl p-4 shadow-sm hover:shadow-md transition">
       
       <h2 className="font-semibold text-lg text-gray-800 mb-2">
         {item.book.title}

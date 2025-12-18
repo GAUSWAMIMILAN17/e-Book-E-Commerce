@@ -54,12 +54,12 @@ const Books = () => {
             <div className="h-12 w-12 border-4 border-gray-300 border-t-[#008ECC] rounded-full animate-spin"></div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 mt-6">
-            {allBooks.slice(0, 6).map((book) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-6 mb-15">
+            {allBooks.map((book) => (
               <Bookcard
                 key={book._id}
                 id={book._id}
-                // image={book.image}
+                coverImage={book.coverImage}
                 title={book.title}
                 price={book.price}
                 oldPrice={book.oldPrice}
