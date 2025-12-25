@@ -12,7 +12,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../Components/ui/select";
+} from "../components/ui/select";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "../components/redux/authSlice";
 import axios from "axios";
