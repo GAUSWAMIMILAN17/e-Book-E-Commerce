@@ -549,7 +549,7 @@ const Details = () => {
                         <BookOpen className="h-4 w-4 text-muted-foreground" />
                         <div>
                           <p className="text-xs text-muted-foreground">Posted Date</p>
-                          <p className="font-medium">{new Date(singleBook.createdAt).toLocaleDateString("en-IN", {
+                          <p className="font-medium">{new Date(singleBook?.createdAt).toLocaleDateString("en-IN", {
                         day: "numeric",
                         month: "short",
                         year: "numeric",

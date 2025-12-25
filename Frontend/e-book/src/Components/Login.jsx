@@ -100,12 +100,13 @@ const Login = () => {
             <CardContent>
               <form onSubmit={submitHandler} className="space-y-4">
                 <Label>Email</Label>
-                <Input name="email" value={input.email} onChange={changeEventHandler} />
+                <Input name="email" value={input.email} placeholder="viratkohli@gmail.com" onChange={changeEventHandler} />
 
                 <Label>Password</Label>
                 <Input
                   type="password"
                   name="password"
+                  placeholder="********"
                   value={input.password}
                   onChange={changeEventHandler}
                 />
@@ -135,6 +136,16 @@ const Login = () => {
                   </Button>
                 )}
               </form>
+              <div className="mt-6 text-center">
+                <p className="text-sm text-muted-foreground">
+                  Create account?
+                  <Link to="/signup">
+                    <button className="text-primary ms-2 font-medium hover:underline">
+                      Signup
+                    </button>
+                  </Link>
+                </p>
+              </div>
             </CardContent>
           </Card>
         </div>
