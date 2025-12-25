@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../Components/Navbar";
-import Footer from "../Components/Footer";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 import { Plus, Search } from "lucide-react";
-import { Button } from "../Components/ui/button";
-import { Input } from "../Components/ui/input";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
 import AdminBookCard from "./AdminBookCard";
 import {
   Select,
@@ -14,14 +14,14 @@ import {
   SelectValue,
 } from "../Components/ui/select";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "../Components/redux/authSlice";
+import { setLoading } from "../components/redux/authSlice";
 import axios from "axios";
 import { BOOK_API_ENDPOINT } from "../utils/data";
 import {
   setAllAdminBooks,
   setFilterAdminBooks,
 
-} from "../Components/redux/bookSlice";
+} from "../components/redux/bookSlice";
 import { toast } from "sonner";
 
 const Category = [

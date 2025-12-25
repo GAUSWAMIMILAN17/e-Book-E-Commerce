@@ -1,23 +1,23 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { Button } from "../Components/ui/button";
-import { Input } from "../Components/ui/input";
-import { Label } from "../Components/ui/label";
-import { Textarea } from "../Components/ui/textarea";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Textarea } from "../components/ui/textarea";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "../Components/ui/card";
-import Footer from "../Components/Footer";
-import Navbar from "../Components/Navbar";
+} from "../components/ui/card";
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
 import { BOOK_API_ENDPOINT } from "../utils/data";
 import axios from "axios";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "../Components/redux/authSlice";
+import { setLoading } from "../components/redux/authSlice";
 
 const AdminAddBook = () => {
   const navigate = useNavigate();

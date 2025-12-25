@@ -1,27 +1,27 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import Login from "./Components/Login";
-import Signup from "./Components/Signup";
-import Home from "./Components/Home";
-import Books from "./Components/Books";
-import Categories from "./Components/Categories";
-import Myorders from "./Components/Myorders";
-import ViewOrders from "./Components/ViewOrders";
-import Details from "./Components/Details";
-import Cart from "./Components/Cart";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+import Home from "./components/Home";
+import Books from "./components/Books";
+import Categories from "./components/Categories";
+import Myorders from "./components/Myorders";
+import ViewOrders from "./components/ViewOrders";
+import Details from "./components/Details";
+import Cart from "./components/Cart";
 import { useEffect } from "react";
 import axios from "axios";
 import { USER_API_ENDPOINT } from "./utils/data";
 import { useDispatch } from "react-redux";
-import { setUser } from "./Components/redux/authSlice";
-import Profile from "./Components/Profile";
-import AdminHome from "./Admin Components/AdminHome";
-import AdminBooks from "./Admin Components/AdminBooks";
-import AdminAddBook from "./Admin Components/AdminAddBook";
-import AdminOrders from "./Admin Components/AdminOrders";
-import AdminViewOrder from "./Admin Components/AdminViewOrder";
-import AdminBookDetail from "./Admin Components/AdminBookDetail";
-import AdminProfile from "./Admin Components/AdminProfile";
+import { setUser } from "./components/redux/authSlice";
+import Profile from "./components/Profile";
+import AdminHome from "./admin-components/AdminHome";
+import AdminBooks from "./admin-components/AdminBooks";
+import AdminAddBook from "./admin-components/AdminAddBook";
+import AdminOrders from "./admin-components/AdminOrders";
+import AdminViewOrder from "./admin-components/AdminViewOrder";
+import AdminBookDetail from "./admin-components/AdminBookDetail";
+import AdminProfile from "./admin-components/AdminProfile";
 
 function App() {
   

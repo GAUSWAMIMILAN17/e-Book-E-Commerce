@@ -1,20 +1,20 @@
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Package, User, MapPin, Calendar } from "lucide-react";
-import { Button } from "../Components/ui/button";
+import { Button } from "../components/ui/button";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "../Components/ui/card";
-import { OrderStatusBadge } from "./Components/OrderStatusBadge";
+} from "../components/ui/card";
+import { OrderStatusBadge } from "./components/OrderStatusBadge";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../Components/ui/select";
+} from "../components/ui/select";
 import {
   Table,
   TableBody,
@@ -22,17 +22,17 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../Components/ui/table";
-import { Separator } from "../Components/ui/separator";
-import Navbar from "../Components/Navbar";
-import Footer from "../Components/Footer";
+} from "../components/ui/table";
+import { Separator } from "../components/ui/separator";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "../Components/redux/authSlice";
+import { setLoading } from "../components/redux/authSlice";
 import { toast } from "sonner";
 import axios from "axios";
 import { ORDER_API_ENDPOINT } from "../utils/data";
-import { setSingleAdminOrder } from "../Components/redux/orderSlice";
+import { setSingleAdminOrder } from "../components/redux/orderSlice";
 
 const AdminViewOrder = () => {
   const { id } = useParams();

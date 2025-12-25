@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Search, Eye, Filter } from "lucide-react";
-import { Input } from "../Components/ui/input";
-import { Button } from "../Components/ui/button";
-import { OrderStatusBadge } from "./Components/OrderStatusBadge";
+import { Input } from "../components/ui/input";
+import { Button } from "../components/ui/button";
+import { OrderStatusBadge } from "./components/OrderStatusBadge";
 import {
   Table,
   TableBody,
@@ -11,25 +11,25 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../Components/ui/table";
+} from "../components/ui/table";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../Components/ui/select";
-import Footer from "../Components/Footer";
-import Navbar from "../Components/Navbar";
+} from "../components/ui/select";
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "../Components/redux/authSlice";
+import { setLoading } from "../components/redux/authSlice";
 import { ORDER_API_ENDPOINT } from "../utils/data";
 import {
   setAdminOrdersFilter,
   setAllAdminGetAllOrders,
-} from "../Components/redux/orderSlice";
+} from "../components/redux/orderSlice";
 import axios from "axios";
 
 

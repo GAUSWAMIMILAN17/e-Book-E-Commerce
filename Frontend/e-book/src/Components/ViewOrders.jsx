@@ -116,7 +116,7 @@ import { ORDER_API_ENDPOINT } from "../utils/data";
 import { setSingleOrder } from "./redux/orderSlice";
 import OrderBookCard from "./OrderbookCard";
 import { setLoading } from "./redux/authSlice";
-import { OrderStatusBadge } from "../Admin Components/Components/OrderStatusBadge";
+import { OrderStatusBadge } from "../admin-components/components/OrderStatusBadge";
 
 const ViewOrders = () => {
   const { id } = useParams();

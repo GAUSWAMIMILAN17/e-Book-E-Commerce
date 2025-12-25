@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../Components/Navbar";
-import Footer from "../Components/Footer";
-import { Card, CardContent, CardHeader, CardTitle } from "../Components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "../Components/ui/avatar";
-import { Badge } from "../Components/ui/badge";
-import { Button } from "../Components/ui/button";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
-import { Popover, PopoverContent, PopoverTrigger } from "../Components/ui/popover";
-import { Label } from "../Components/ui/label";
-import { Input } from "../Components/ui/input";
-import { Textarea } from "../Components/ui/textarea";
+import { Popover, PopoverContent, PopoverTrigger } from "../components/ui/popover";
+import { Label } from "../components/ui/label";
+import { Input } from "../components/ui/input";
+import { Textarea } from "../components/ui/textarea";
 import axios from "axios";
 import { USER_API_ENDPOINT } from "../utils/data";
 import { Link, useNavigate } from "react-router-dom";
-import { setLoading, setUser } from "../Components/redux/authSlice";
+import { setLoading, setUser } from "../components/redux/authSlice";
 
 
 const AdminProfile = () => {

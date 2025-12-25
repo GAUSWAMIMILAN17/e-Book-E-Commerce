@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { ArrowLeft, Delete, Edit, Trash2 } from "lucide-react";
-import { Button } from "../Components/ui/button";
-import { Badge } from "../Components/ui/badge";
+import { Button } from "../components/ui/button";
+import { Badge } from "../components/ui/badge";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,25 +13,25 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "../Components/ui/alert-dialog";
+} from "../components/ui/alert-dialog";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../Components/ui/dialog";
-import { Input } from "../Components/ui/input";
-import { Label } from "../Components/ui/label";
+} from "../components/ui/dialog";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
 import { Textarea } from "../Components/ui/textarea";
-import Navbar from "../Components/Navbar";
-import Footer from "../Components/Footer";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import { toast } from "sonner";
 import axios from "axios";
 import { BOOK_API_ENDPOINT } from "../utils/data";
 import { useDispatch, useSelector } from "react-redux";
-import { setAdminSingleBook } from "../Components/redux/bookSlice";
-import { setLoading } from "../Components/redux/authSlice";
+import { setAdminSingleBook } from "../components/redux/bookSlice";
+import { setLoading } from "../components/redux/authSlice";
 
 const AdminBookDetail = () => {
   const { id } = useParams();

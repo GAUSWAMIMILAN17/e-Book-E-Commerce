@@ -45,7 +45,7 @@ import React from "react";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
 import { Eye, Phone, Mail, MapPin } from "lucide-react";
-import { OrderStatusBadge } from "../Admin Components/Components/OrderStatusBadge";
+import { OrderStatusBadge } from "../admin-components/components/OrderStatusBadge";
 
 const Ordercard = ({
   id,

@@ -198,14 +198,14 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, BookOpen, Package, TrendingUp, BarChart3, Users, ShoppingCart, Shield } from "lucide-react";
-import Navbar from "../Components/Navbar";
-import Footer from "../Components/Footer";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import { useDispatch, useSelector } from "react-redux";
-import { setAllAdminBooks } from "../Components/redux/bookSlice";
-import { setLoading } from "../Components/redux/authSlice";
+import { setAllAdminBooks } from "../components/redux/bookSlice";
+import { setLoading } from "../components/redux/authSlice";
 import axios from "axios";
 import { BOOK_API_ENDPOINT, ORDER_API_ENDPOINT } from "../utils/data";
-import { setAllAdminGetAllOrders } from "../Components/redux/orderSlice";
+import { setAllAdminGetAllOrders } from "../components/redux/orderSlice";
 
 //dumy bellow
 
