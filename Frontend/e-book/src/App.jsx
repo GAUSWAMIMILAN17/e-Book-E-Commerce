@@ -1,27 +1,27 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import Login from "./components/Login";
-import Signup from "./components/Signup";
-import Home from "./components/Home";
-import Books from "./components/Books";
-import Categories from "./components/Categories";
-import Myorders from "./components/Myorders";
-import ViewOrders from "./components/ViewOrders";
-import Details from "./components/Details";
-import Cart from "./components/Cart";
+import Login from "./components/Login.jsx";
+import Signup from "./components/Signup.jsx";
+import Home from "./components/Home.jsx";
+import Books from "./components/Books.jsx";
+import Categories from "./components/Categories.jsx";
+import Myorders from "./components/Myorders.jsx";
+import ViewOrders from "./components/ViewOrders.jsx";
+import Details from "./components/Details.jsx";
+import Cart from "./components/Cart.jsx";
 import { useEffect } from "react";
 import axios from "axios";
 import { USER_API_ENDPOINT } from "./utils/data";
 import { useDispatch } from "react-redux";
 import { setUser } from "./components/redux/authSlice";
-import Profile from "./components/Profile";
-import AdminHome from "./admin-components/AdminHome";
-import AdminBooks from "./admin-components/AdminBooks";
-import AdminAddBook from "./admin-components/AdminAddBook";
-import AdminOrders from "./admin-components/AdminOrders";
-import AdminViewOrder from "./admin-components/AdminViewOrder";
-import AdminBookDetail from "./admin-components/AdminBookDetail";
-import AdminProfile from "./admin-components/AdminProfile";
+import Profile from "./components/Profile.jsx";
+import AdminHome from "./admin-components/AdminHome.jsx";
+import AdminBooks from "./admin-components/AdminBooks.jsx";
+import AdminAddBook from "./admin-components/AdminAddBook.jsx";
+import AdminOrders from "./admin-components/AdminOrders.jsx";
+import AdminViewOrder from "./admin-components/AdminViewOrder.jsx";
+import AdminBookDetail from "./admin-components/AdminBookDetail.jsx";
+import AdminProfile from "./admin-components/AdminProfile.jsx";
 
 function App() {
   
