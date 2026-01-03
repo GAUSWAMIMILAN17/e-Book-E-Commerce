@@ -14,26 +14,33 @@ const Myorders = () => {
   const { user, loading } = useSelector((store) => store.user);
 
   useEffect(() => {
+    if (!user?._id) return; // ✅ WAIT for user
+
     const fetchPlacedBook = async () => {
-      dispatch(setLoading(true));
-      const res = await axios.get(`${ORDER_API_ENDPOINT}/myOrders`, {
-        withCredentials: true,
-      });
-      // console.log(allMyOrders)
-      // console.log(user)
-      // console.log("API Response:",res.data.orders)
-      if (res.data.success) {
-        dispatch(setAllMyOrders(res.data.orders));
-        dispatch(setLoading(false));
+      try {
+        dispatch(setLoading(true));
+
+        const res = await axios.get(`${ORDER_API_ENDPOINT}/myOrders`, {
+          withCredentials: true,
+        });
+
+        if (res.data.success) {
+          dispatch(setAllMyOrders(res.data.orders));
+        }
+      } catch (error) {
+        console.error("Fetch orders error:", error);
+      } finally {
+        dispatch(setLoading(false)); // ✅ ONLY here
       }
     };
+
     fetchPlacedBook();
-    dispatch(setLoading(false))
-  }, []);
+  }, [user, dispatch]);
 
   return (
     <div>
       <Navbar />
+
       <div className="min-h-screen max-w-7xl mb-15 mx-auto">
         <div className="my-5 max-w-6xl mx-auto">
           <h1 className="text-2xl font-semibold">
@@ -41,6 +48,7 @@ const Myorders = () => {
           </h1>
           <p className="text-[#666]">Track and view your order history</p>
         </div>
+
         {loading ? (
           <div className="my-5 flex items-center justify-center">
             <div className="h-12 w-12 border-4 border-gray-300 border-t-[#008ECC] rounded-full animate-spin"></div>
@@ -64,6 +72,7 @@ const Myorders = () => {
           </div>
         )}
       </div>
+
       <Footer />
     </div>
   );
