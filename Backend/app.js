@@ -22,8 +22,8 @@ app.use(express.urlencoded({ extended: true }));  //Agar data form se aata hai (
 
 
 const corsOptions = {
-  origin: ["http://localhost:5173"],
-  // origin: ["https://e-book-c1nu.onrender.com"],
+  // origin: ["http://localhost:5173"],
+  origin: ["https://e-book-c1nu.onrender.com"],
   credentials: true,
 };
 
