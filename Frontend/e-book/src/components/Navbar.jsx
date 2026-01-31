@@ -403,18 +403,29 @@ const Navbar = () => {
                 <NavLink to="/admin/home">Home</NavLink>
 
                 <div className="relative group">
-                  <button className="flex items-center gap-1">
-                    Books
-                    <ChevronDown className="h-4 w-4 group-hover:rotate-180 transition" />
-                  </button>
+                  {/* Trigger + Hover Zone */}
+                  <div className="flex items-center gap-1 cursor-pointer px-2 py-1">
+                    <span>Books</span>
+                    <ChevronDown className="h-4 w-4 transition-transform group-hover:rotate-180" />
+                  </div>
 
-                  <div className="absolute invisible opacity-0 group-hover:visible group-hover:opacity-100 transition bg-background border rounded-lg shadow mt-2 w-40">
+                  {/* Dropdown */}
+                  <div
+                    className="
+      absolute left-0 mt-2 w-40
+      rounded-lg border bg-background shadow-lg
+      opacity-0 invisible
+      group-hover:opacity-100 group-hover:visible
+      transition-all duration-200
+    "
+                  >
                     <Link
                       to="/admin/books"
                       className="block px-4 py-2 hover:bg-accent"
                     >
                       All Books
                     </Link>
+
                     <Link
                       to="/admin/books/add"
                       className="block px-4 py-2 hover:bg-accent"

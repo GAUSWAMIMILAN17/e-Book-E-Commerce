@@ -15,7 +15,7 @@ const AdminBookCard = ({book}) => {
           className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        <div className="absolute bottom-4 left-0 right-0 flex justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
+        <div className="absolute mb-3 bottom-4 left-0 right-0 flex justify-center md:opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
           <Button asChild size="sm" className="gap-2">
             <Link to={`${book._id}`}>
               <Eye className="h-4 w-4" />

@@ -17,6 +17,7 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -143,7 +144,10 @@ const AdminBookDetail = () => {
         formData,
         {
           withCredentials: true,
-        }
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
       );
       if (res.data.success) {
         toast.success("Book Update Successfully");
@@ -225,7 +229,7 @@ const AdminBookDetail = () => {
                         year: "numeric",
                         month: "long",
                         day: "numeric",
-                      }
+                      },
                     )}
                   </div>
 
@@ -239,9 +243,12 @@ const AdminBookDetail = () => {
                           Edit Book
                         </Button>
                       </DialogTrigger>
-                      <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+                      <DialogContent className="md:max-w-lg max-h-[90vh] overflow-y-auto ">
                         <DialogHeader>
                           <DialogTitle>Edit Book</DialogTitle>
+                          <DialogDescription>
+                            Book ni details edit karva mate aa form use karo.
+                          </DialogDescription>
                         </DialogHeader>
                         <form onSubmit={handleEdit} className="space-y-4">
                           <div className="space-y-2">

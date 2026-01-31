@@ -92,8 +92,8 @@ const AdminProfile = () => {
   return (
     <div>
       <Navbar />
-      <div className="min-h-screen max-w-7xl flex justify-center mx-auto my-10">
-        <Card className="w-full h-[80vh] max-w-3xl rounded-2xl shadow-lg">
+      <div className="min-h-screen max-w-7xl flex justify-center mx-3 md:mx-auto my-10">
+        <Card className="w-full h-[90vh] max-w-3xl rounded-2xl shadow-lg">
           <CardHeader className="flex flex-col items-center gap-4">
             <Avatar className="h-28 w-28">
               <AvatarImage src={user.profile.profilePhoto} />
@@ -146,7 +146,7 @@ const AdminProfile = () => {
                     <Button>Edit Profile</Button>
                   </PopoverTrigger>
 
-                  <PopoverContent className="w-96 m-5 space-y-4">
+                  <PopoverContent className="md:w-96 mx-5 space-y-2">
                     <h3 className="text-lg font-semibold">Edit Profile</h3>
 
                     <div className="space-y-2">

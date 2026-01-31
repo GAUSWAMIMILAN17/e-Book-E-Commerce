@@ -291,15 +291,15 @@ const AdminHome = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <section className=" from-amber-100 bg-[#212844] py-20 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-10 items-center">
+      <section className=" from-amber-100 bg-[#212844] md:py-20 py-15 overflow-hidden">
+        <div className="max-w-7xl md:mx-auto px-4 grid md:grid-cols-2 gap-10 items-center">
           <div className="space-y-6">
-            <h1 className="text-4xl md:text-5xl font-bold text-white">
+            <h1 className="text-3xl md:text-5xl font-bold text-white">
               Admin Dashboard <br />
-              <span className="text-[#008ECC]">Manage Your E-Book Store</span>
+              <span className="text-[#008ECC] md:text-4xl text-2xl">Manage Your E-Book Store</span>
             </h1>
 
-            <p className="text-lg text-gray-200 max-w-lg">
+            <p className="text-[15px] md:text-xl text-gray-200 max-w-lg">
               Control books, orders and users from one powerful admin panel.
             </p>
 
@@ -445,14 +445,14 @@ const AdminHome = () => {
               <h2 className="text-3xl font-bold text-gray-900">
                 Featured Books
               </h2>
-              <p className="text-gray-500">
+              <p className="text-gray-500 text-[13px] md:text-[1rem]">
                 Quick overview of highlighted books
               </p>
             </div>
 
             <Link
               to="/admin/books"
-              className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-100 transition"
+              className="flex items-center gap-2 px-2 py-2 md:px-4 md:py-2 border rounded-lg hover:bg-gray-100 transition"
             >
               View All
               <ArrowRight className="h-4 w-4" />
