@@ -174,9 +174,9 @@ const ViewOrders = () => {
       {singleOrder?.books?.map((item, index) => (
         <div key={index} className="flex flex-col">
           <img
-            src={item.book.coverImage}
+            src={item?.book?.coverImage}
             className="rounded-t-xl h-44 object-cover"
-            alt={item?.book.title}
+            alt={item?.book?.title}
           />
           <OrderBookCard item={item} />
         </div>

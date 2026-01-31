@@ -41,7 +41,7 @@ const Myorders = () => {
     <div>
       <Navbar />
 
-      <div className="min-h-screen max-w-7xl mb-15 mx-auto">
+      <div className="min-h-screen max-w-7xl mb-15 mx-5 md:mx-auto">
         <div className="my-5 max-w-6xl mx-auto">
           <h1 className="text-2xl font-semibold">
             My Orders : {allMyOrders.length}

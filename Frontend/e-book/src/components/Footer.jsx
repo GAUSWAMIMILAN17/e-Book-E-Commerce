@@ -7,7 +7,7 @@ const Footer = () => {
   const { user } = useSelector((store) => store.user);
   return (
     <footer className="bg-[#212844] text-gray-300">
-      <div className="max-w-7xl mx-auto px-6 py-14 grid grid-cols-1 md:grid-cols-3 gap-40">
+      <div className="max-w-7xl mx-auto px-[1rem] py-[2rem] grid grid-cols-1 md:grid-cols-3 gap-[2rem] lg:gap-[5rem]">
         {/* Brand Section */}
         <div>
           <h1 className="text-2xl font-bold text-white mb-3">e-Book</h1>
@@ -54,9 +54,11 @@ const Footer = () => {
               <Link to="/categories">
                 <li className="hover:text-white my-2 cursor-pointer">Categories</li>
               </Link>
-              <Link to="/myorders">
+              {
+                user && <Link to="/myorders">
                 <li className="hover:text-white my-2 cursor-pointer">My Orders</li>
               </Link>
+              }
             </ul>
           </div>
         )}

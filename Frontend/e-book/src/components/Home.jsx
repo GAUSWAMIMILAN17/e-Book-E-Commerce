@@ -149,13 +149,13 @@ const Home = () => {
   return (
     <div className="bg-gray-50">
       <Navbar />
-
+      <div className="min-h-screen">
       {/* HERO SECTION */}
       <section className="bg-[#212844] text-white overflow-hidden relative">
         <div className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-10 items-center">
           
           <div className="space-y-6 z-10 relative">
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight">
+            <h1 className="text-3xl md:text-5xl font-bold leading-tight">
               Discover Your Next <br />
               <span className="text-[#008ECC]">Favorite E-Book</span>
             </h1>
@@ -166,13 +166,13 @@ const Home = () => {
             </p>
 
             <Link to="/books">
-              <button className="px-6 py-3 bg-[#008ECC] rounded-lg font-medium hover:opacity-90 transition">
+              <button className="px-6 py-3 bg-[#008ECC]  md:hover:bg-gray-500 rounded-lg font-medium hover:opacity-90 transition">
                 Explore Books
               </button>
             </Link>
           </div>
 
-          <div className="flex justify-center items-center relative h-96">
+          <div className="flex justify-center items-center relative h-70 md:h-80">
             {/* Main 3D Book Animation Container */}
             <div className="relative w-full h-full flex items-center justify-center">
               
@@ -319,7 +319,7 @@ const Home = () => {
       </section>
 
       {/* FEATURED BOOKS */}
-      <section className="max-w-7xl mx-auto px-6 py-16">
+      <section className="max-w-7xl mx-auto px-6 md:py-16 py-5">
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-800">
             Top Books
@@ -347,7 +347,7 @@ const Home = () => {
           </div>
         )}
       </section>
-
+      </div>
       <Footer />
     </div>
   );

@@ -40,14 +40,14 @@ const Books = () => {
   return (
     <div>
       <Navbar />
-      <div className="min-h-screen max-w-7xl mx-auto my-5">
+      <div className="min-h-screen max-w-7xl mx-5 md:mx-auto my-5 ">
         <h1 className="text-3xl font-semibold">All Books</h1>
         <p className="text-[#666]">Browse our complete collection</p>
-        <div className="flex items-center gap-2 my-5">
+        <div className="flex  items-center gap-2 my-5">
           <span className="opacity-55">
             <Search></Search>
           </span>
-          <Input className="w-[40%]" placeholder="Search by title"></Input>
+          <Input className="md:w-[40%] w-full" placeholder="Search by title"></Input>
         </div>
         {loading ? (
           <div className="my-5 flex items-center justify-center">
